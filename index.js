@@ -27,5 +27,6 @@ index.use("/admin", adminRouter);
 
 connectDB();
 
-index.listen(4000,() => console.log("Server connected"));
+
+index.listen(process.env.PORT,() => console.log("Server connected 3000"));
 

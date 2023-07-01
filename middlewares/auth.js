@@ -52,13 +52,16 @@ module.exports = {
             const verified = jwt.verify(token, process.env.JWT_SECRET);
 
             req.payload = verified;
-
-            if (payload.role === 'provider') {
+            
+            
+            if (req.payload.role === 'provider') {
+                
                 next()
             } else {
                 return res.status(403).json({ err: "Access Denied" });
             }
         } catch (err) {
+            console.log(err);
             res.status(500).json({ err: "Server Down" });
         }
     },
@@ -66,10 +69,14 @@ module.exports = {
 
     verifyTokenAdmin: async (req, res, next) => {
         try {
+            
+
             let token = req.headers['authorization'];
+            
             if (!token) {
                 return res.status(403).json({ err: "Access Denied" });
             }
+          
         
 
             if (token.startsWith('Bearer ')) {
@@ -80,9 +87,7 @@ module.exports = {
 
             const verified = jwt.verify(token, process.env.JWT_SECRET);
             
-
             req.payload = verified;
-            
             if (req.payload.role === 'admin') {
                 next()
 

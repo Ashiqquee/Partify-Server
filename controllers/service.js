@@ -33,18 +33,12 @@ module.exports = {
            const { file, body: { name } } = req;
            let serviceName = name.toLowerCase()
            let image;
-           if (!file) {
-               return res.status(400).json({ errMsg: 'Image needed' })
-           }
-           if (!name) {
-                return res.status(400).json({ errMsg: 'Name needed' })
-           }
-
-           const existingName = Services.findOne({serviceName});
-
-           if(existingName){
-            return res.status(400).json({errMsg:'Service already found'})
-           }
+           if (!file) return res.status(400).json({ errMsg: 'Image needed' })
+           if (!name) return res.status(400).json({ errMsg: 'Name needed' })
+          
+           const existingName = await Services.findOne({serviceName});
+           
+           if(existingName) return res.status(400).json({errMsg:'Service already found'})
 
            const mimeType = mime.lookup(file.originalname);
            if (mimeType && mimeType.includes("image/")) {
