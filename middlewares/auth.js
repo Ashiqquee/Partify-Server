@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-require('dotenv').config()
+require('dotenv').config();
+let errMsg;
 
 module.exports = {
     
@@ -13,7 +14,7 @@ module.exports = {
             let token = req.headers['authorization'];
 
             if (!token) {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ errMsg: "Access Denied" });
             }
 
             if (token.startsWith('Bearer ')) {
@@ -28,10 +29,10 @@ module.exports = {
             if (payload.role === 'user') {
                 next()
             } else {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ errMsg: "Access Denied" });
             }
         } catch (err) {
-            res.status(500).json({ err: "Server Down" });
+            res.status(500).json({ errMsg: "Server Down" });
         }
     },
 
@@ -39,9 +40,9 @@ module.exports = {
     verifyTokenProvider: async (req, res, next) => {
         try {
             let token = req.headers['authorization'];
-
+            console.log(token);
             if (!token) {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ errMsg: "Access Denied" });
             }
 
             if (token.startsWith('Bearer ')) {
@@ -58,11 +59,11 @@ module.exports = {
                 
                 next()
             } else {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ eerrMsgrr: "Access Denied" });
             }
         } catch (err) {
             console.log(err);
-            res.status(500).json({ err: "Server Down" });
+            res.status(500).json({ errMsg: "Server Down" });
         }
     },
 
@@ -74,7 +75,7 @@ module.exports = {
             let token = req.headers['authorization'];
             
             if (!token) {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ errMsg: "Access Denied" });
             }
           
         
@@ -92,11 +93,11 @@ module.exports = {
                 next()
 
             } else {
-                return res.status(403).json({ err: "Access Denied" });
+                return res.status(403).json({ errMsg: "Access Denied" });
             }
         } catch (err) {
             console.log("p");
-            res.status(500).json({ err: "Server Down" });
+            res.status(500).json({ errMsg: "Server Down" });
         }
     }
 

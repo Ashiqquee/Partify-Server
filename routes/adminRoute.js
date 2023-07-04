@@ -4,7 +4,7 @@ const upload = multer.createMulter();
 const { verifyTokenAdmin } = require('../middlewares/auth');
 const {allUser,unBlockUser,blockUser} = require('../controllers/user')
 const { login, } = require('../controllers/admin');
-const { addService, serviceList } = require('../controllers/service');
+const { addService, serviceList, editServices } = require('../controllers/service');
 const { providerList, confirmProvider ,blockProvider,unBlockProvider} = require('../controllers/provider')
 
 const adminRouter = express.Router();
@@ -29,5 +29,7 @@ adminRouter.patch('/confirmProvider/:providerId', verifyTokenAdmin, confirmProvi
 adminRouter.patch('/blockProvider/:providerId', verifyTokenAdmin, blockProvider);
 
 adminRouter.patch('/unBlockProvider/:providerId', verifyTokenAdmin, unBlockProvider);
+
+adminRouter.patch('/services', upload.single('file'), verifyTokenAdmin, editServices)
 
 module.exports = adminRouter;

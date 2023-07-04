@@ -40,7 +40,7 @@ module.exports = {
                 places,
             });
 
-            newProvider.save();
+            await newProvider.save();
 
             res.status(200).json({ msg: "Registration Success" });
 
@@ -101,7 +101,7 @@ module.exports = {
 
             provider.adminConfirmed = true;
 
-            provider.save();
+            await provider.save();
 
             return res.status(200).json({ msg: 'Confirmed Successfully' })
 
@@ -123,7 +123,7 @@ module.exports = {
 
             provider.isBanned = true;
 
-            provider.save();
+            await provider.save();
 
             return res.status(200).json({ msg: 'Unblocked Successfully' })
 
@@ -144,12 +144,12 @@ module.exports = {
             
             provider.isBanned = false;
 
-            provider.save();
+            await provider.save();
 
             return res.status(200).json({ msg: 'Unblocked Successfully' })
 
         } catch (error) {
-            return res.status(500).json({ errMsg: 'Something went wrong' })
+            return res.status(500).json({ errMsg: 'Something went wrong' });
             console.log(error);
         }
     },
@@ -160,9 +160,25 @@ module.exports = {
             const services = await Provider.findById(id).populate('services');
             const serviceList = services.services
             res.status(200).json({ serviceList })
-            console.log(services.services);
         } catch (error) {
             console.log(error);
+        }
+    },
+
+    removeService : async (req,res) => {
+        try {
+            
+          const {id} = req.payload;
+          const {serviceId} = req.params;
+          const provider =  await Provider.findById(id).populate('services');
+            provider.services = provider.services.filter(obj => obj._id.toString() !== serviceId);
+            await provider.save();
+            const updatedService = provider.services;
+            return res.status(200).json({ updatedService });
+            
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ errMsg: 'Something went wrong' });
         }
     }
 

@@ -25,7 +25,7 @@ module.exports = {
                 password: sha256(password + process.env.PASSWORD_SALT),
                 referalNumber
             })
-            newUser.save();
+            await   newUser.save();
             res.status(200).json({ msg: "Registration Success" });
         } catch (error) {
             res.status(500).json({ errMsg: "Something went wrong" });
