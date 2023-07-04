@@ -40,7 +40,6 @@ module.exports = {
     verifyTokenProvider: async (req, res, next) => {
         try {
             let token = req.headers['authorization'];
-            console.log(token);
             if (!token) {
                 return res.status(403).json({ errMsg: "Access Denied" });
             }

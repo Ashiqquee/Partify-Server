@@ -2,25 +2,11 @@ const Services = require('../models/service');
 const Provider = require('../models/provider');
 const sha256 = require('js-sha256');
 const { generateToken } = require('../middlewares/auth');
+const { addService } = require('./service');
+const mongoose = require('mongoose');
 
 let msg, errMsg;
 module.exports = {
-
-    serviceList: async (req, res) => {
-
-        try {
-            const serviceList = await Services.find({}, { serviceName: 1 });
-
-
-            res.status(200).json({ serviceList });
-
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({ errMsg: 'Something went wrong' })
-        }
-    },
-
-
 
     signup: async (req, res) => {
         try {
@@ -82,8 +68,7 @@ module.exports = {
     providerList : async(req,res) => {
         try {
             const providerData = await Provider.find().populate('services');
-            
-            
+         
             res.status(200).json({providerData});
         } catch (error) {
             console.log(error);
@@ -158,8 +143,16 @@ module.exports = {
         try {
             const {id} = req.payload;
             const services = await Provider.findById(id).populate('services');
-            const serviceList = services.services
-            res.status(200).json({ serviceList })
+           
+            const serviceList = services.services;
+
+            const currentIds = services.services.map(obj => obj._id);
+
+            const remainingServices = await Services.find({ _id: { $nin: currentIds } });
+
+      
+
+            res.status(200).json({ serviceList,remainingServices })
         } catch (error) {
             console.log(error);
         }
@@ -179,6 +172,26 @@ module.exports = {
         } catch (error) {
             console.log(error);
             return res.status(500).json({ errMsg: 'Something went wrong' });
+        }
+    },
+
+    addService : async(req,res) => {
+        try {
+        const {serviceId} = req.params;
+        const { id } = req.payload;
+        const provider = await Provider.findById(id);
+
+            if (provider.services.includes(serviceId)){
+                res.status(400).json({errMsg:"Service already added"});
+            }
+
+         provider.services.push(new mongoose.Types.ObjectId(serviceId));
+        await provider.save();
+        return res.status(200).json({msg:"New Service Added"});
+
+        
+        } catch (error) {
+            console.log(error);
         }
     }
 

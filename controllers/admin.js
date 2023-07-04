@@ -16,18 +16,7 @@ module.exports = {
 
     },
 
-    serviceList: async(req,res) => {
-      
-        try {
-            const serviceList = await Services.find();
-            console.log(serviceList);
-            const { serviceName ,serviceImage} = serviceList;
-            res.status(200).json({serviceName,serviceImage});
-        } catch (error) {
-            
-            res.status(500).json({errMsg:'Something went wrong'})
-        }
-    },
+
 
    
 
