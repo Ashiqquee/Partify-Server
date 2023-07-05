@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
         image: {
             type: String,
         },
+        place:{
+            type: String,
+        },
         referalNumber: {
             type: String,
             trim: true,

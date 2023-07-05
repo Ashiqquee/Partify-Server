@@ -43,5 +43,15 @@ module.exports = {
             res.status(500).json({ errMsg: 'Server Error' });
             console.log(error);
         }
+    },
+
+    post : async(req,res) => {
+        try {
+            const post = await Post.find().populate('providerId');
+            console.log(post);
+            return res.status(200).json({post});
+        } catch (error) {
+        console.log(error); 
+        }
     }
 }

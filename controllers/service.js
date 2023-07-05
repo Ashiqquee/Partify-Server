@@ -82,7 +82,7 @@ module.exports = {
 
            
             if(file&&file.filename){
-                console.log("ok");
+          
                 const mimeType = mime.lookup(file.originalname);
                 if (mimeType && mimeType.includes("image/")) {
                     const result = await cloudinary.uploader.upload(file.path);

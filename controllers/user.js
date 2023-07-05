@@ -1,7 +1,16 @@
 const User = require('../models/user');
 const sha256 = require('js-sha256');
 const { generateToken } = require('../middlewares/auth');
+const cloudinary = require("cloudinary").v2;
 let msg, errMsg;
+const mime = require("mime-types");
+const fs = require("fs");
+
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
+});
 
 module.exports = {
     signup: async (req, res) => {
@@ -108,4 +117,47 @@ module.exports = {
 
         }
     },
+
+    editProfile: async(req,res) => {
+        try {
+            const { id } = req.payload;
+            const user = await User.findById(id);
+            console.log(user);
+            const {file} = req;
+            if (file && file.filename){
+                const mimeType = mime.lookup(file.originalname);
+                if (mimeType && mimeType.includes("image/")) {
+                    const result = await cloudinary.uploader.upload(file.path);
+                    image = result.secure_url;
+                    fs.unlinkSync(file?.path);
+                } else {
+                    fs.unlinkSync(file?.path);
+                    return res.status(400).json({ status: false, errMsg: "File is not a image" });
+                };
+
+                user.image = image;
+                await user.save();
+                return res.status(200).json({msg:"Pofile Updated "});
+            }
+
+
+
+
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    profile:async(req,res) => {
+        try {
+        const {id} = req.payload;
+        const user = await User.findById(id);
+        res.status(200).json({user});
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }

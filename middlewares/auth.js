@@ -12,7 +12,7 @@ module.exports = {
     verifyTokenUser: async (req, res, next) => {
         try {
             let token = req.headers['authorization'];
-
+            
             if (!token) {
                 return res.status(403).json({ errMsg: "Access Denied" });
             }
@@ -26,7 +26,7 @@ module.exports = {
 
             req.payload = verified;
 
-            if (payload.role === 'user') {
+            if (req.payload.role === 'user') {
                 next()
             } else {
                 return res.status(403).json({ errMsg: "Access Denied" });

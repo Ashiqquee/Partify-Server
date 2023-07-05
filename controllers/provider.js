@@ -41,7 +41,7 @@ module.exports = {
         try {
             
             const {phone,password} = req.body;
-            console.log(req.body);
+         
             const provider = await Provider.findOne({phone});
 
             if (!provider) return res.status(401).json({ errMsg: "Provider not found" });
@@ -79,7 +79,7 @@ module.exports = {
     confirmProvider : async(req,res) => {
         try {
             const {providerId} = req.params;
-            console.log();
+           
             const provider = await Provider.findById(providerId);
 
             if (!provider) return res.status(400).json({ errMsg: 'Provider Not Found' })

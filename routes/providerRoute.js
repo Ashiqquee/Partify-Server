@@ -6,7 +6,7 @@ const upload = multer.createMulter();
 const { verifyTokenProvider } =  require('../middlewares/auth');
 const { signup, login, providerServices, removeService, addService } = require('../controllers/provider');
 const { serviceList } = require('../controllers/service');
-const {addPost} = require('../controllers/post')
+const {addPost,post} = require('../controllers/post')
 
 providerRouter.get('/serviceList', serviceList);
 
@@ -21,5 +21,7 @@ providerRouter.patch('/removeService/:serviceId', verifyTokenProvider, removeSer
 providerRouter.patch('/addService/:serviceId', verifyTokenProvider, addService);
 
 providerRouter.post('/post', upload.array("file", 5),verifyTokenProvider,addPost);
+
+providerRouter.get('/post',verifyTokenProvider,post)
 
 module.exports = providerRouter;
