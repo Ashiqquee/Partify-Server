@@ -122,7 +122,7 @@ module.exports = {
         try {
             const { id } = req.payload;
             const user = await User.findById(id);
-            console.log(user);
+            
             const {file} = req;
             if (file && file.filename){
                 const mimeType = mime.lookup(file.originalname);
@@ -139,7 +139,17 @@ module.exports = {
                 await user.save();
                 return res.status(200).json({msg:"Pofile Updated "});
             }
+          
+            const {name,place,email,phone} = req.body;
 
+        
+            user.name = name;
+            user.place = place;
+            user.phone = phone;
+            user.email=email;
+
+            await user.save()
+            return res.status(200).json({ msg: "Pofile Updated " });
 
 
 
