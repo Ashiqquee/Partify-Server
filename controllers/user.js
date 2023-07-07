@@ -122,7 +122,7 @@ module.exports = {
         try {
             const { id } = req.payload;
             const user = await User.findById(id);
-            
+
             const {file} = req;
             if (file && file.filename){
                 const mimeType = mime.lookup(file.originalname);
@@ -158,6 +158,8 @@ module.exports = {
 
         } catch (error) {
             console.log(error);
+            return res.status(500).json({ errMsg: 'Something went wrong' })
+
         }
     },
 
@@ -168,6 +170,8 @@ module.exports = {
         res.status(200).json({user});
         } catch (error) {
             console.log(error);
+            return res.status(500).json({ errMsg: 'Something went wrong' })
+
         }
     }
 }

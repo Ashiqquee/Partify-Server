@@ -45,7 +45,7 @@ module.exports = {
         }
     },
 
-    post : async(req,res) => {
+    feed : async(req,res) => {
         try {
             const post = await Post.find().populate('providerId');
             console.log(post);
@@ -53,5 +53,8 @@ module.exports = {
         } catch (error) {
         console.log(error); 
         }
+    },
+    post:async(req,res) => {
+
     }
 }
