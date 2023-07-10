@@ -28,6 +28,11 @@ const providerSchema = new mongoose.Schema({
     },
     isBanned: { type: Boolean, default: false },
     adminConfirmed: { type: Boolean, default: false },
+    profilePic:{type:String},
+    coverPic: { type: String },
+    description: { type: String },
+
+
 
 });
 

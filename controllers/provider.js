@@ -4,6 +4,15 @@ const sha256 = require('js-sha256');
 const { generateToken } = require('../middlewares/auth');
 const { addService } = require('./service');
 const mongoose = require('mongoose');
+const cloudinary = require("cloudinary").v2;
+const mime = require("mime-types");
+const fs = require("fs");
+
+cloudinary.config({
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
+});
 
 let msg, errMsg;
 module.exports = {
@@ -150,8 +159,6 @@ module.exports = {
 
             const remainingServices = await Services.find({ _id: { $nin: currentIds } });
 
-      
-
             res.status(200).json({ serviceList,remainingServices })
         } catch (error) {
             console.log(error);
@@ -194,5 +201,80 @@ module.exports = {
             console.log(error);
         }
     },
+
+    providerProfile : async(req,res) => {
+        try {
+          const {id} = req.payload;
+            
+          const profile = await Provider.findById(id).populate('services');
+
+       
+
+          res.status(200).json({profile})
+          
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    editProfile : async(req,res) => {
+        try {
+            const { id } = req.payload;
+
+            const{file} = req;
+           
+            const {name,description,places,phone,dp} = req.body
+          
+            const provider = await Provider.findById(id);
+
+
+            if(dp && file && file.filename){
+              
+                let image;
+                const mimeType = mime.lookup(file.originalname);
+                if (mimeType && mimeType.includes("image/")) {
+                    const result = await cloudinary.uploader.upload(file.path);
+                    image = result.secure_url;
+                    fs.unlinkSync(file?.path);
+                } else {
+                    fs.unlinkSync(file?.path);
+                    return res.status(400).json({ status: false, errMsg: "File is not a image" });
+                };
+
+                provider.profilePic = image;
+                await provider.save();
+                return res.status(200).json({ image });
+            }
+            if (!name || !description || !places || !phone) {
+                return res.status(400).json({ errMsg: 'bad request' })
+            }
+            provider.name = name;
+            provider.description = description;
+            provider.places = places;
+            provider.phone = phone;
+
+            if(file && file.filename){
+                let image;
+                const mimeType = mime.lookup(file.originalname);
+                if (mimeType && mimeType.includes("image/")) {
+                    const result = await cloudinary.uploader.upload(file.path);
+                    image = result.secure_url;
+                    fs.unlinkSync(file?.path);
+                } else {
+                    fs.unlinkSync(file?.path);
+                    return res.status(400).json({ status: false, errMsg: "File is not a image" });
+                };
+                provider.coverPic = image ;
+            }
+            await provider.save();
+            const image = provider.coverPic;
+            return res.status(200).json({ image })
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 }  

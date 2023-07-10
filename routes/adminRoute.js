@@ -6,7 +6,7 @@ const {allUser,unBlockUser,blockUser} = require('../controllers/user')
 const { login, } = require('../controllers/admin');
 const { addService, serviceList, editServices } = require('../controllers/service');
 const { providerList, confirmProvider ,blockProvider,unBlockProvider} = require('../controllers/provider')
-
+const { posts, deletePost } = require('../controllers/post')
 const adminRouter = express.Router();  
 
 adminRouter.post('/login',login);
@@ -30,6 +30,11 @@ adminRouter.patch('/blockProvider/:providerId', verifyTokenAdmin, blockProvider)
 
 adminRouter.patch('/unBlockProvider/:providerId', verifyTokenAdmin, unBlockProvider);
 
-adminRouter.patch('/services', upload.single('file'), verifyTokenAdmin, editServices)
+adminRouter.patch('/services', upload.single('file'), verifyTokenAdmin, editServices);
+
+adminRouter.get('/posts', verifyTokenAdmin, posts);
+
+adminRouter.delete('/posts/:postId', verifyTokenAdmin, deletePost);
+
 
 module.exports = adminRouter;

@@ -125,6 +125,7 @@ module.exports = {
 
             const {file} = req;
             if (file && file.filename){
+                let image;
                 const mimeType = mime.lookup(file.originalname);
                 if (mimeType && mimeType.includes("image/")) {
                     const result = await cloudinary.uploader.upload(file.path);
@@ -132,12 +133,12 @@ module.exports = {
                     fs.unlinkSync(file?.path);
                 } else {
                     fs.unlinkSync(file?.path);
-                    return res.status(400).json({ status: false, errMsg: "File is not a image" });
+                    return res.status(400).json({ errMsg: "File is not a image" });
                 };
 
                 user.image = image;
                 await user.save();
-                return res.status(200).json({msg:"Pofile Updated "});
+                return res.status(200).json({image});
             }
           
             const {name,place,email,phone} = req.body;

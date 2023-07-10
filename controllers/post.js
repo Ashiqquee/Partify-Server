@@ -38,23 +38,46 @@ module.exports = {
             });
 
             await post.save();
-
+            res.status(200).json({msg:"post added"})
         } catch (error) {
             res.status(500).json({ errMsg: 'Server Error' });
             console.log(error);
         }
     },
 
-    feed : async(req,res) => {
+    posts : async(req,res) => {
         try {
-            const post = await Post.find().populate('providerId');
-            console.log(post);
-            return res.status(200).json({post});
+            const post = await Post.find().populate('providerId').sort({ _id: -1 });
+         
+            return res.status(200).json({ post });
         } catch (error) {
-        console.log(error); 
+            res.status(500).json({ errMsg: 'Server Error' });
+
         }
     },
-    post:async(req,res) => {
 
+    deletePost : async(req,res) => {
+
+        try {
+            const {postId} = req.params;
+            
+
+           await Post.findByIdAndDelete(postId);
+
+            return res.status(200).json({msg:"Deleted"});
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ errMsg: 'Server Error' });
+
+        }
+    },
+    providerPost : async(req,res) => {
+        const {id} = req.payload;
+
+        const posts = await Post.find({ providerId: id }).populate('providerId').sort({ _id: -1 });;
+
+        return res.status(200).json({posts})
     }
+   
 }
