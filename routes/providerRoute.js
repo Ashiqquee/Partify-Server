@@ -7,7 +7,7 @@ const { verifyTokenProvider } =  require('../middlewares/auth');
 const { signup, login, providerServices, removeService, addService, providerProfile, editProfile } = require('../controllers/provider');
 const { serviceList } = require('../controllers/service');
 const { addPost,  providerPost } = require('../controllers/post');
-const { providerOrder, newOrder } = require('../controllers/order')
+const { providerOrder, newOrder, providerSingleOrder } = require('../controllers/order')
 
 providerRouter.get('/serviceList', serviceList);
 
@@ -32,6 +32,9 @@ providerRouter.patch('/profile', upload.single('file'), verifyTokenProvider, edi
 providerRouter.get('/orders', verifyTokenProvider, providerOrder);
 
 providerRouter.post('/orders', verifyTokenProvider, newOrder);
+
+providerRouter.get('/order/:orderId', verifyTokenProvider, providerSingleOrder);
+
 
 
 

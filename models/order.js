@@ -24,7 +24,7 @@ const orderSchema = new mongoose.Schema({
         default: 'pending'
     },
     services:{
-        type: mongoose.Schema.Types.ObjectId,
+        type:Array,
         ref: 'services',
         required: true
     },
@@ -65,8 +65,8 @@ const orderSchema = new mongoose.Schema({
             type:Number,
             required:true
         }
-    }
-})
+    },
+});
 
 
 
