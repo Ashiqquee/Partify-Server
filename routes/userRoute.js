@@ -28,7 +28,9 @@ userRouter.get('/order/:orderId', verifyTokenUser, userSingleOrder);
 
 userRouter.post('/payment/:orderId',verifyTokenUser, paymentLink );
 
-userRouter.get('/orderSuccess/:orderId', orderSuccess)
+userRouter.get('/orderSuccess/:orderId', orderSuccess);
+
+
 
 
 module.exports = userRouter;

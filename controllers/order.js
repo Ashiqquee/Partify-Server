@@ -2,7 +2,8 @@ const Order = require('../models/order');
 const User = require('../models/user')
 const ObjectId = require('mongoose').Types.ObjectId;
 let msg,errMsg;
-const Stripe = require('stripe')
+const Stripe = require('stripe');
+const user = require('./user');
 const stripe = Stripe('sk_test_51NT2kqSHi3MXzUyUkZMxNjNq5t5k9pDrY0KbzU45sWcKHhd1AiPvEImpJraqCSB1Zo7Al8YprKQU0oViIqpYPHn200vM19OIVB')
 
 module.exports = {
@@ -190,7 +191,56 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    editOrder:async(req,res) => {
+        try {
+
+            const {orderId} = req.params;
+
+            const {cancel,alternativePhone,eventDate,services,amount,street,city,zip,district} = req.body;
+
+           
+
+            const order = await Order.findById(orderId);
+
+            if(cancel === 'yes'){
+                order.status = 'cancelled by provider';
+                await order.save();
+
+                const userId = order.customerId.toString();
+
+                const user = await User.findById(userId);
+
+                user.wallet += order.totalAmount - order.remainingAmount;
+
+                console.log(user.wallet);
+
+                await user.save();
+
+                return  res.status(200).json({msg:'edited successfully'});
+
+            }
+            
+            let serviceId = services.map(service => service.value);
+            order.alternativeNumber = alternativePhone;
+            order.eventDate = eventDate;
+            order.totalAmount = amount;
+            order.services = serviceId;
+            order.remainingAmount = amount;
+            const address = order.address;
+            address.zip = zip;
+            address.street = street;
+            address.city = city;
+            address.district = district;
+
+            await order.save();
+            
+            res.status(200).json({ msg: 'edited successfully' });
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
     
 
