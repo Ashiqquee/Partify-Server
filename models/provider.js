@@ -26,6 +26,10 @@ const providerSchema = new mongoose.Schema({
         ref: 'services',
         required: true,
     },
+    wallet: {
+        type: Number,
+        default: 0,
+    },
     isBanned: { type: Boolean, default: false },
     adminConfirmed: { type: Boolean, default: false },
     profilePic:{type:String},

@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema(
         place:{
             type: String,
         },
+        wallet: {
+            type: Number,
+            default:0,
+        },
+        
         referalNumber: {
             type: String,
             trim: true,

@@ -46,6 +46,7 @@ module.exports = {
     },
 
     posts : async(req,res) => {
+        console.log("ok");
         try {
             const post = await Post.find().populate('providerId').sort({ _id: -1 });
          

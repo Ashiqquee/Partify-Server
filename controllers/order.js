@@ -2,6 +2,8 @@ const Order = require('../models/order');
 const User = require('../models/user')
 const ObjectId = require('mongoose').Types.ObjectId;
 let msg,errMsg;
+const Stripe = require('stripe')
+const stripe = Stripe('sk_test_51NT2kqSHi3MXzUyUkZMxNjNq5t5k9pDrY0KbzU45sWcKHhd1AiPvEImpJraqCSB1Zo7Al8YprKQU0oViIqpYPHn200vM19OIVB')
 
 module.exports = {
     providerOrder : async(req,res) => {
@@ -39,6 +41,7 @@ module.exports = {
                 services:serviceIds,
                 advanceAmount,
                 totalAmount: amount,
+                remainingAmount: amount,
                 eventDate,
                 address:{
                     street,
@@ -113,6 +116,81 @@ module.exports = {
         }
 
     },
+    paymentLink: async (req, res) => {
+        try {
+            
+            const {orderId} = req.params;
+            const { wallet, selectedOption } = req.body;
+           
+            let amount;
+            const order = await Order.findById(orderId).populate('providerId');
+            
+            if (selectedOption === 'advanceAmount'){
+               
+                amount = order.advanceAmount - wallet;
+  
+            } else {
+                amount = order.remainingAmount - wallet
+            };
+            
+            if(amount <= 0){
+                return res.status(400).json({errMsg:'Amount  is less than 0'})
+            } 
+
+            const session = await stripe.checkout.sessions.create({
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'inr',
+                            product_data: {
+                                name: order?.providerId.name,
+                            },
+                            unit_amount: amount*100,
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'payment',
+
+                success_url: `http://localhost:4000/orderSuccess/${orderId}?wallet=${wallet}&selectedOption=${selectedOption}&stripe=yes`,
+                cancel_url: 'http://localhost:5173/payment/fail',
+            });
+
+            res.send({ url: session.url });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    orderSuccess : async (req,res) => {
+        try {
+            const {orderId} = req.params;
+            const { wallet, selectedOption, stripe } = req.query;
+            console.log(wallet,selectedOption);
+            const order = await Order.findById(orderId);
+
+            order.remainingAmount = (selectedOption === 'fullAmount' ? 0 : order?.totalAmount - order?.advanceAmount);
+            console.log(order.remainingAmount);
+            order.advancePaymentDate = Date.now();
+
+            order.status = 'confirmed';
+
+            order.walletAmount = order.walletAmount+wallet;
+
+            await order.save();
+
+            let userId = order.customerId.toString();
+
+            const user = await User.findByIdAndUpdate(userId, { $inc: { wallet: -wallet } }, { new: true });
+
+            if (stripe === 'no')  return res.status(200).json({msg:'order confirmed'})
+
+            res.redirect('http://localhost:5173/payment/success');
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     
 

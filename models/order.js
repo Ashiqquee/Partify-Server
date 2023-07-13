@@ -40,7 +40,9 @@ const orderSchema = new mongoose.Schema({
         type :Date,
         required:true
     },
-  
+    remainingAmount: {
+        type: Number
+    },
     advancePaymentDate:{
         type:Date,
     },
