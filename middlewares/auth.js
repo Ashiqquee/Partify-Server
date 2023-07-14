@@ -40,10 +40,11 @@ module.exports = {
     verifyTokenProvider: async (req, res, next) => {
         try {
             let token = req.headers['authorization'];
+           
             if (!token) {
                 return res.status(403).json({ errMsg: "Access Denied" });
             }
-
+            
             if (token.startsWith('Bearer ')) {
                 token = token.slice(7, token.length).trimLeft();
 
@@ -55,9 +56,10 @@ module.exports = {
             
             
             if (req.payload.role === 'provider') {
-                
+               
                 next()
             } else {
+                
                 return res.status(403).json({ eerrMsgrr: "Access Denied" });
             }
         } catch (err) {

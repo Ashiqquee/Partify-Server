@@ -6,7 +6,7 @@ const upload = multer.createMulter();
 const { verifyTokenProvider } =  require('../middlewares/auth');
 const { signup, login, providerServices, removeService, addService, providerProfile, editProfile } = require('../controllers/provider');
 const { serviceList } = require('../controllers/service');
-const { addPost,  providerPost } = require('../controllers/post');
+const { addPost, providerPost, deletePost } = require('../controllers/post');
 const { providerOrder, newOrder, providerSingleOrder,editOrder } = require('../controllers/order')
 
 providerRouter.get('/serviceList', serviceList);
@@ -37,7 +37,7 @@ providerRouter.get('/order/:orderId', verifyTokenProvider, providerSingleOrder);
 
 providerRouter.patch('/order/:orderId', verifyTokenProvider, editOrder);
 
-
+providerRouter.delete('/post/:postId',verifyTokenProvider,deletePost);
 
 
 

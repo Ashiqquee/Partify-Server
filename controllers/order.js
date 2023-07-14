@@ -1,9 +1,9 @@
 const Order = require('../models/order');
-const User = require('../models/user')
+const User = require('../models/user');
+const Provider = require('../models/provider')
 const ObjectId = require('mongoose').Types.ObjectId;
 let msg,errMsg;
 const Stripe = require('stripe');
-const user = require('./user');
 const stripe = Stripe('sk_test_51NT2kqSHi3MXzUyUkZMxNjNq5t5k9pDrY0KbzU45sWcKHhd1AiPvEImpJraqCSB1Zo7Al8YprKQU0oViIqpYPHn200vM19OIVB')
 
 module.exports = {
@@ -197,7 +197,7 @@ module.exports = {
 
             const {orderId} = req.params;
 
-            const {cancel,alternativePhone,eventDate,services,amount,street,city,zip,district} = req.body;
+            const { cancel,completed,alternativePhone,eventDate,services,amount,street,city,zip,district} = req.body;
 
            
 
@@ -216,8 +216,25 @@ module.exports = {
                 console.log(user.wallet);
 
                 await user.save();
-
+                
                 return  res.status(200).json({msg:'edited successfully'});
+
+            };
+
+            if(completed === 'yes'){
+                order.status = 'completed';
+                await order.save();
+
+                const providerId = order.providerId.toString();
+                const provider = await Provider.findById(providerId);
+
+                const amountToSend = Math.round((order.totalAmount - order.remainingAmount) * 0.95);
+
+                provider.wallet += amountToSend;
+
+                await provider.save();
+
+                return res.status(200).json({ msg: ' done' });
 
             }
             
@@ -235,7 +252,7 @@ module.exports = {
 
             await order.save();
             
-            res.status(200).json({ msg: 'edited successfully' });
+            res.status(200).json({ msg: 'edited successfully',order });
 
         } catch (error) {
             console.log(error);

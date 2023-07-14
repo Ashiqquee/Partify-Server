@@ -58,11 +58,11 @@ module.exports = {
     },
 
     deletePost : async(req,res) => {
-
+        
         try {
             const {postId} = req.params;
             
-
+            
            await Post.findByIdAndDelete(postId);
 
             return res.status(200).json({msg:"Deleted"});
