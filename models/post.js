@@ -23,7 +23,8 @@ const postSchema = new mongoose.Schema({
         ref: 'services',
     },
     likes:{
-        type:Number,
+        type:Array,
+        ref:'users',
     },
     createdAt: {
         type: Date,

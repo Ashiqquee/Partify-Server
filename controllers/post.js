@@ -46,12 +46,14 @@ module.exports = {
     },
 
     posts : async(req,res) => {
-        console.log("ok");
+        
         try {
+            
             const post = await Post.find().populate('providerId').sort({ _id: -1 });
          
-            return res.status(200).json({ post });
+            return res.status(200).json({ post});
         } catch (error) {
+            console.log(error);
             res.status(500).json({ errMsg: 'Server Error' });
 
         }
@@ -79,6 +81,27 @@ module.exports = {
         const posts = await Post.find({ providerId: id }).populate('providerId').sort({ _id: -1 });;
 
         return res.status(200).json({posts})
+    },
+
+    editPost: async(req,res) => {
+        const {like} = req.body;
+        const {postId} = req.params;
+        
+        console.log(postId);
+       const post = await Post.findById(postId)
+     
+        if(like === 'yes') {
+            const {id} = req.payload;
+            post.likes.push(id)
+            await post.save();
+            res.status(200).json({msg:'success'})
+        }
+        if (like === 'no') {
+            const { id } = req.payload;
+            post.likes = post.likes.filter(likeId => likeId !== id)
+            await post.save();
+            res.status(200).json({ msg: 'success' })
+        }
     }
    
 }

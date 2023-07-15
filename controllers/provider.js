@@ -88,7 +88,7 @@ module.exports = {
     confirmProvider : async(req,res) => {
         try {
             const {providerId} = req.params;
-           
+           console.log(providerId+"pppp");
             const provider = await Provider.findById(providerId);
 
             if (!provider) return res.status(400).json({ errMsg: 'Provider Not Found' })
@@ -110,7 +110,7 @@ module.exports = {
         try {
 
             const { providerId } = req.params;
-
+            
             const provider = await Provider.findById(providerId);
 
             if (!provider) return res.status(400).json({ errMsg: 'Provider Not Found' })

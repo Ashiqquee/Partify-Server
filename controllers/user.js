@@ -58,7 +58,7 @@ module.exports = {
 
             const token = generateToken(passwordCheck._id, 'user');
 
-            res.status(200).json({ msg: 'Login succesfull', name: passwordCheck?.name, token, role: 'user' })
+            res.status(200).json({ msg: 'Login succesfull', name: passwordCheck?.name, token, role: 'user', id: passwordCheck._id })
 
 
 
