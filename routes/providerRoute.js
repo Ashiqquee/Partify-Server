@@ -8,7 +8,7 @@ const { signup, login, providerServices, removeService, addService, providerProf
 const { serviceList } = require('../controllers/service');
 const { addPost, providerPost, deletePost } = require('../controllers/post');
 const { providerOrder, newOrder, providerSingleOrder,editOrder } = require('../controllers/order')
-
+const { fetchProviderChat, getMessages, createMessage } = require('../controllers/chat')
 providerRouter.get('/serviceList', serviceList);
 
 providerRouter.post('/signup', signup);
@@ -39,6 +39,11 @@ providerRouter.patch('/order/:orderId', verifyTokenProvider, editOrder);
 
 providerRouter.delete('/post/:postId',verifyTokenProvider,deletePost);
 
+providerRouter.post('/message', verifyTokenProvider, createMessage);
+
+providerRouter.get('/chat', verifyTokenProvider, fetchProviderChat);
+
+providerRouter.get('/message/:chatId', verifyTokenProvider, getMessages);
 
 
 module.exports = providerRouter;

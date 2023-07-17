@@ -74,7 +74,6 @@ module.exports = {
             
 
             let token = req.headers['authorization'];
-            
             if (!token) {
                 return res.status(403).json({ errMsg: "Access Denied" });
             }
@@ -88,7 +87,8 @@ module.exports = {
            
 
             const verified = jwt.verify(token, process.env.JWT_SECRET);
-            
+            console.log(token);
+
             req.payload = verified;
             if (req.payload.role === 'admin') {
                 next()

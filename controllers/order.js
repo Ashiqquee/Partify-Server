@@ -259,6 +259,30 @@ module.exports = {
         }
     },
 
+    fullOrders: async(req,res) => {
+        try {
+            const orders = await Order.find();
+
+            res.status(200).json({orders})
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    singleOrder: async(req,res) => {
+        try {
+            const { orderId } = req.params;
+
+            if (ObjectId.isValid(orderId) === false) res.status(400).json({ errMsg: "Bad Request" });
+
+            const order = await Order.findById(orderId).populate('customerId').populate('providerId').populate('services');
+
+
+            return res.status(200).json({order})
+        } catch (error) {
+           console.log(error); 
+        }
+    }
     
 
 }

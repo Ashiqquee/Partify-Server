@@ -28,5 +28,32 @@ index.use("/admin", adminRouter);
 connectDB();
 
 
-index.listen(process.env.PORT,() => console.log("Server connected 3000"));
+const server = index.listen(process.env.PORT, () => console.log(`Server connected ${process.env.PORT} `));
 
+const io = require('socket.io')(server,{
+    pingTimeOut:60000,
+    cors:{
+        origin:'http://localhost:5173'
+    }
+});
+
+io.on('connection', (socket) => {
+   
+    socket.on('setup' ,(id) => {
+        socket.join(id);
+        socket.emit('connected');
+    });
+
+    socket.on('join chat', (room) => {
+        socket.join(room);
+        console.log('user joined room'+room);
+    });
+
+    socket.on('new message',(newMessage) => {
+        io.emit('messageResponse', newMessage);
+    });
+
+    socket.on('disconnect', () => {
+        console.log("Socket disconnected");
+    });
+});

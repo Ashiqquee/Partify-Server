@@ -1,7 +1,10 @@
 const Chat = require('../models/chats')
-const Message = require('../models/messages')
+const Message = require('../models/messages');
+
 module.exports = {
-     accessChat : async (req, res) => {
+
+
+     createChat : async (req, res) => {
         try {
             const { providerId } = req.body;
             
@@ -38,7 +41,7 @@ module.exports = {
                 select: 'name profilePic'
                 });
 
-            console.log(chats);
+          
 
             res.status(200).json({chats})
 
@@ -49,9 +52,10 @@ module.exports = {
 
     createMessage : async(req,res) => {
         try {
-            console.log("okok");
+         
             const {role,id} = req.payload;
             const  {chatId,content} = req.body;
+            console.log(req.body);
             const senderType = role === 'user' ? 'users' : 'provider';
             const message = await Message.create({
                 content,
@@ -60,9 +64,9 @@ module.exports = {
                 chatId,
             });
 
-            console.log(message);
+        
             
-            res,status(200).json({message})
+            res.status(200).json({message})
 
         } catch (error) {
             
@@ -70,18 +74,35 @@ module.exports = {
     },
     getMessages:async(req,res) => {
         try {
-            console.log("ok");
+            
           const {chatId} = req.params;
             
-            const messages = await Message.find({ chatId }).populate('senderId').sort({_id:-1});
+            const messages = await Message.find({ chatId }).populate('senderId');
 
-            console.log(messages);
+         
 
             res.status(200).json({messages});
           
         } catch (error) {
             
         }
-    }
+    },
+    fetchProviderChat: async (req, res) => {
+        try {
+            const { id } = req.payload;
+
+            const chats = await Chat.find({ providerId: id }).populate({
+                path: 'userId',
+                select: 'name image'
+            });
+
+        
+
+            res.status(200).json({ chats })
+
+        } catch (error) {
+
+        }
+    },
 
 }

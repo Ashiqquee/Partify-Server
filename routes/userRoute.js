@@ -4,7 +4,7 @@ const { signup, login, editProfile, profile, } = require('../controllers/user');
 const { posts, editPost } = require('../controllers/post');
 const {providerList} = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
-const { accessChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
+const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
 const multer = require('../config/multer');
 const upload = multer.createMulter();
 
@@ -33,7 +33,7 @@ userRouter.get('/orderSuccess/:orderId', orderSuccess);
 
 userRouter.patch('/post/:postId', verifyTokenUser, editPost);
 
-userRouter.post('/chat', verifyTokenUser, accessChat);
+userRouter.post('/chat', verifyTokenUser, createChat);
 
 userRouter.get('/chat', verifyTokenUser, fetchUserChat);
 
