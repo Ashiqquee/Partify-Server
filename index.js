@@ -50,6 +50,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('new message',(newMessage) => {
+        console.log(newMessage);
         io.emit('messageResponse', newMessage);
     });
 

@@ -14,9 +14,10 @@ module.exports = {
             let isChat = await Chat.findOne({
                 userId: id,
                 providerId: providerId
-            }).populate('userId').populate('providerId');
-            
-            if (isChat) return res.json({ chat: isChat,msg:"ij" });
+            }).populate('userId').populate('providerId').sort({updatedAt:-1});
+
+            console.log(isChat);
+            if (isChat) return res.status(200).json({ chat: isChat, });
 
             
             const chat = await Chat.create({
@@ -39,7 +40,10 @@ module.exports = {
             const chats = await Chat.find({ userId: id }).populate({
                 path: 'providerId',
                 select: 'name profilePic'
-                });
+            }).populate({
+                path: 'userId',
+                select: 'name image'
+            });
 
           
 
@@ -55,7 +59,6 @@ module.exports = {
          
             const {role,id} = req.payload;
             const  {chatId,content} = req.body;
-            console.log(req.body);
             const senderType = role === 'user' ? 'users' : 'provider';
             const message = await Message.create({
                 content,
@@ -64,6 +67,7 @@ module.exports = {
                 chatId,
             });
 
+            await Chat.updateOne({_id:chatId},{$set:{latestMessage:message._id}});
         
             
             res.status(200).json({message})
@@ -94,7 +98,10 @@ module.exports = {
             const chats = await Chat.find({ providerId: id }).populate({
                 path: 'userId',
                 select: 'name image'
-            });
+            }).populate({
+                path: 'providerId',
+                select: 'name profilePic'
+            })
 
         
 

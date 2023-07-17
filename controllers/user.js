@@ -15,10 +15,19 @@ cloudinary.config({
 module.exports = {
     signup: async (req, res) => {
         try {
-            const { name, email, phone, password } = req.body;
+            const { name, email, phone, password,referalCode } = req.body;
             const exsistingUser = await User.findOne({ $or: [{ email }, { phone }] });
             console.log(exsistingUser);
             if (exsistingUser) return res.status(409).json({ errMsg: "User already found" });
+
+            if(referalCode){
+                const referealUser = await User.findOne({referalNumber:referalCode});
+                if(!referealUser) return res.status(200).json({errMsg:"Invalid referal code"});
+
+                referealUser.wallet += 100;
+                
+                await referealUser.save()
+            }
 
             const timestamp = Date.now();
             const randomNum = Math.floor(Math.random() * 1000);
@@ -35,6 +44,7 @@ module.exports = {
                 referalNumber
             })
             await   newUser.save();
+
             res.status(200).json({ msg: "Registration Success" });
         } catch (error) {
             res.status(500).json({ errMsg: "Something went wrong" });
