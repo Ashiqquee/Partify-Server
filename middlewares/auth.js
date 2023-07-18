@@ -87,7 +87,7 @@ module.exports = {
            
 
             const verified = jwt.verify(token, process.env.JWT_SECRET);
-            console.log(token);
+          
 
             req.payload = verified;
             if (req.payload.role === 'admin') {

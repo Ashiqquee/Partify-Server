@@ -78,7 +78,13 @@ module.exports = {
     providerPost : async(req,res) => {
         const {id} = req.payload;
 
-        const posts = await Post.find({ providerId: id }).populate('providerId').sort({ _id: -1 });;
+        const posts = await Post.find({ providerId: id }).populate({
+            path: 'providerId',
+            select:'name profilePic'
+        }).populate({
+            path: 'comments.userId',
+            select: 'name image'
+        }).sort({ _id: -1 });;
 
         return res.status(200).json({posts})
     },
@@ -89,7 +95,7 @@ module.exports = {
             const { postId } = req.params;
             console.log(comment);
             console.log(postId);
-            const post = await Post.findById(postId)
+            const post = await Post.findById(postId);
 
             if (like === 'yes') {
                 const { id } = req.payload;
@@ -114,7 +120,13 @@ module.exports = {
 
                 post.comments.push(newComment);
                 await post.save();
-                res.status(200).json({ msg: 'success' })
+
+                const updatedPost = await Post.findById(post._id).populate({
+                  path:'comments.userId',
+                  select:'name image'  
+                }).populate({path:'providerId',select: 'name profilePic'}) ;
+
+                res.status(200).json({ updatedPost })
             }
         } catch (error) {
             console.log(error);

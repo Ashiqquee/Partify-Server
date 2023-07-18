@@ -30,11 +30,17 @@ module.exports = {
 
             const user = await User.findOne({phone});
 
+            const provider = await Provider.findById(id).select('places');
+            
+           
+            if (!provider.places.includes('All Kerala') && !provider.places.includes(district)) return res.status(400).json({errMsg:'You are not providing services to this district.Update your profile'});
+       
+
             if(!user){
                 return res.status(400).json({errMsg:"Mobile not found"})
             };
 
-            const order = new Order({
+            const order = await Order.create({
                 customerId:user._id,
                 providerId:id,
                 alternativeNumber: alternativePhone,
@@ -52,8 +58,9 @@ module.exports = {
                 }
             });
 
-            await order.save();
-            return res.status(200).json({msg:"Order successfully created"});
+            const newOrder = await Order.populate(order,{path:'customerId',select:'name'});
+
+            return res.status(200).json({newOrder});
 
         } catch (error) {
            console.log(error); 
@@ -261,7 +268,7 @@ module.exports = {
 
     fullOrders: async(req,res) => {
         try {
-            const orders = await Order.find();
+            const orders = await Order.find().sort({_id:-1});
 
             res.status(200).json({orders})
         } catch (error) {
