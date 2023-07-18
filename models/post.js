@@ -18,10 +18,21 @@ const postSchema = new mongoose.Schema({
     tagline:{
         type:String
     },
-    comments:{
-        type:Array,
-        ref: 'services',
-    },
+    comments:[{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users',
+            required: true
+        },
+        content: {
+            type: String,
+            required: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now()
+        }
+}],
     likes:{
         type:Array,
         ref:'users',

@@ -1,7 +1,7 @@
 const express = require('express');
 const { verifyTokenUser } = require('../middlewares/auth');
 const { signup, login, editProfile, profile, } = require('../controllers/user');
-const { posts, editPost } = require('../controllers/post');
+const { posts, likeOrUnlike } = require('../controllers/post');
 const {providerList} = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
 const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
@@ -31,7 +31,7 @@ userRouter.post('/payment/:orderId',verifyTokenUser, paymentLink );
 
 userRouter.get('/orderSuccess/:orderId', orderSuccess);
 
-userRouter.patch('/post/:postId', verifyTokenUser, editPost);
+userRouter.patch('/post/:postId', verifyTokenUser, likeOrUnlike);
 
 userRouter.post('/chat', verifyTokenUser, createChat);
 

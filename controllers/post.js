@@ -5,9 +5,9 @@ const fs = require("fs");
 let msg, errMsg;
 
 cloudinary.config({
-    cloud_name: process.env.cloud_name,
-    api_key: process.env.api_key,
-    api_secret: process.env.api_secret,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 module.exports = {
@@ -49,7 +49,7 @@ module.exports = {
         
         try {
             
-            const post = await Post.find().populate('providerId').sort({ _id: -1 });
+            const post = await Post.find().populate('providerId').populate('comments.userId').sort({ _id: -1 });
          
             return res.status(200).json({ post});
         } catch (error) {
@@ -83,24 +83,41 @@ module.exports = {
         return res.status(200).json({posts})
     },
 
-    editPost: async(req,res) => {
-        const {like} = req.body;
-        const {postId} = req.params;
-        
-        console.log(postId);
-       const post = await Post.findById(postId)
-     
-        if(like === 'yes') {
-            const {id} = req.payload;
-            post.likes.push(id)
-            await post.save();
-            res.status(200).json({msg:'success'})
-        }
-        if (like === 'no') {
-            const { id } = req.payload;
-            post.likes = post.likes.filter(likeId => likeId !== id)
-            await post.save();
-            res.status(200).json({ msg: 'success' })
+    likeOrUnlike: async(req,res) => {
+        try {
+            const { like, comment } = req.body;
+            const { postId } = req.params;
+            console.log(comment);
+            console.log(postId);
+            const post = await Post.findById(postId)
+
+            if (like === 'yes') {
+                const { id } = req.payload;
+                post.likes.push(id)
+                await post.save();
+                res.status(200).json({ msg: 'success' })
+            }
+            if (like === 'no') {
+                const { id } = req.payload;
+                post.likes = post.likes.filter(likeId => likeId !== id)
+                await post.save();
+                res.status(200).json({ msg: 'success' })
+            };
+
+            if (comment === 'yes') {
+                const { id } = req.payload;
+                const { content } = req.body;
+                const newComment = {
+                    userId: id,
+                    content
+                };
+
+                post.comments.push(newComment);
+                await post.save();
+                res.status(200).json({ msg: 'success' })
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
    

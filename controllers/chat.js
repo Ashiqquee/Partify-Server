@@ -14,9 +14,8 @@ module.exports = {
             let isChat = await Chat.findOne({
                 userId: id,
                 providerId: providerId
-            }).populate('userId').populate('providerId').sort({updatedAt:-1});
+            }).populate('userId').populate('providerId');
 
-            console.log(isChat);
             if (isChat) return res.status(200).json({ chat: isChat, });
 
             
@@ -43,7 +42,7 @@ module.exports = {
             }).populate({
                 path: 'userId',
                 select: 'name image'
-            });
+            }).sort({ updatedAt: -1 });
 
           
 
@@ -101,7 +100,7 @@ module.exports = {
             }).populate({
                 path: 'providerId',
                 select: 'name profilePic'
-            })
+            }).sort({ updatedAt: -1 })
 
         
 
