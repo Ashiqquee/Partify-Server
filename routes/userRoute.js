@@ -2,7 +2,7 @@ const express = require('express');
 const { verifyTokenUser } = require('../middlewares/auth');
 const { signup, login, editProfile, profile,googleLogin } = require('../controllers/user');
 const { posts, likeOrUnlike } = require('../controllers/post');
-const {providerList} = require('../controllers/provider');
+const { providerList, singleProvider } = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
 const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
 const multer = require('../config/multer');
@@ -42,6 +42,7 @@ userRouter.post('/message', verifyTokenUser, createMessage);
 
 userRouter.get('/message/:chatId', verifyTokenUser, getMessages);
 
+userRouter.get('/provider/:providerId', singleProvider)
 
 
 

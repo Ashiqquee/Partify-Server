@@ -274,6 +274,19 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    singleProvider: async(req,res) => {
+        try {
+            const {providerId} = req.params;
+
+            const provider = await Provider.findById(providerId).populate('services');
+
+            res.status(200).json({provider})
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }  
