@@ -4,7 +4,7 @@ const Provider = require('../models/provider')
 const ObjectId = require('mongoose').Types.ObjectId;
 let msg,errMsg;
 const Stripe = require('stripe');
-const stripe = Stripe('sk_test_51NT2kqSHi3MXzUyUkZMxNjNq5t5k9pDrY0KbzU45sWcKHhd1AiPvEImpJraqCSB1Zo7Al8YprKQU0oViIqpYPHn200vM19OIVB')
+const stripe = Stripe(process.env.STRIPE_KEY)
 
 module.exports = {
     providerOrder : async(req,res) => {

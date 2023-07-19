@@ -76,6 +76,25 @@ module.exports = {
             console.log(error);
         }
     },
+    googleLogin: async(req,res) => {
+        try {
+           const {userEmail} = req.body;
+            
+           const user = await User.findOne({email:userEmail});
+
+           console.log(user);
+
+           if(!user) return res.status(402).json({errMsg:'User not found'});
+
+           const token = generateToken(user._id, 'user');
+
+
+            return res.status(200).json({ name: user?.name, token, role: 'user', id:user?._id});
+           
+        } catch (error) {
+            
+        }
+    },
 
     allUser: async (req, res) => {
         try {

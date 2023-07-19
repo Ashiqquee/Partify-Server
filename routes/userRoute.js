@@ -1,19 +1,20 @@
 const express = require('express');
 const { verifyTokenUser } = require('../middlewares/auth');
-const { signup, login, editProfile, profile, } = require('../controllers/user');
+const { signup, login, editProfile, profile,googleLogin } = require('../controllers/user');
 const { posts, likeOrUnlike } = require('../controllers/post');
 const {providerList} = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
 const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
 const multer = require('../config/multer');
 const upload = multer.createMulter();
-
 const userRouter = express.Router();
 
 
 userRouter.post('/signup',signup);
 
 userRouter.post('/login', login);
+
+userRouter.post('/login/google', googleLogin);
 
 userRouter.get('/profile',verifyTokenUser,profile)
 
