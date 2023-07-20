@@ -76,17 +76,21 @@ module.exports = {
         }
     },
     providerPost : async(req,res) => {
-        const {id} = req.payload;
+        try {
+            // const { id } = req.payload;
 
-        const posts = await Post.find({ providerId: id }).populate({
-            path: 'providerId',
-            select:'name profilePic'
-        }).populate({
-            path: 'comments.userId',
-            select: 'name image'
-        }).sort({ _id: -1 });;
+            // const posts = await Post.find({ providerId: id }).populate({
+            //     path: 'providerId',
+            //     select: 'name profilePic'
+            // }).populate({
+            //     path: 'comments.userId',
+            //     select: 'name image'
+            // }).sort({ _id: -1 });;
 
-        return res.status(200).json({posts})
+            // return res.status(200).json({ posts })
+        } catch (error) {
+            console.log(error);
+        }
     },
 
     likeOrUnlike: async(req,res) => {

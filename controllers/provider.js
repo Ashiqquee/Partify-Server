@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cloudinary = require("cloudinary").v2;
 const mime = require("mime-types");
 const fs = require("fs");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -204,7 +205,9 @@ module.exports = {
     providerProfile : async(req,res) => {
         try {
           const {id} = req.payload;
+        
             
+
           const profile = await Provider.findById(id).populate('services');
 
        

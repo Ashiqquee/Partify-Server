@@ -42,7 +42,7 @@ userRouter.post('/message', verifyTokenUser, createMessage);
 
 userRouter.get('/message/:chatId', verifyTokenUser, getMessages);
 
-userRouter.get('/provider/:providerId', singleProvider)
+userRouter.get('/pro/:providerId', singleProvider)
 
 
 
