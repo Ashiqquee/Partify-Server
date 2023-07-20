@@ -3,9 +3,9 @@ const multer = require('../config/multer');
 const upload = multer.createMulter();
 const { verifyTokenAdmin } = require('../middlewares/auth');
 const {allUser,unBlockUser,blockUser} = require('../controllers/user')
-const { login, } = require('../controllers/admin');
+const { login, dashboard, monthlySalesGraph, frequentProviders } = require('../controllers/admin');
 const { addService, serviceList, editServices } = require('../controllers/service');
-const { providerList, confirmProvider ,blockProvider,unBlockProvider} = require('../controllers/provider')
+const { providerList, confirmProvider ,blockProvider,unBlockProvider,} = require('../controllers/provider')
 const { posts, deletePost } = require('../controllers/post');
 const { fullOrders,singleOrder } = require('../controllers/order')
 const adminRouter = express.Router();  
@@ -39,7 +39,16 @@ adminRouter.delete('/posts/:postId', verifyTokenAdmin, deletePost);
 
 adminRouter.get('/orders', verifyTokenAdmin, fullOrders)
 
-adminRouter.get('/order/:orderId', verifyTokenAdmin, singleOrder)
+adminRouter.get('/order/:orderId', verifyTokenAdmin, singleOrder);
+
+adminRouter.get('/dashboard', verifyTokenAdmin, dashboard);
+
+adminRouter.get('/chart', monthlySalesGraph);
+
+adminRouter.get('/frequentProviders', frequentProviders);
+
+
+
 
 
 module.exports = adminRouter;
