@@ -40,7 +40,11 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now()
-    }
+    },
+    reports : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'users',
+    }]
 });
 
 

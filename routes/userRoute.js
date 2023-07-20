@@ -1,7 +1,7 @@
 const express = require('express');
 const { verifyTokenUser } = require('../middlewares/auth');
-const { signup, login, editProfile, profile,googleLogin } = require('../controllers/user');
-const { posts, likeOrUnlike } = require('../controllers/post');
+const { signup, login, editProfile, profile, googleLogin, userDetails, savePost, unsavePost } = require('../controllers/user');
+const { posts, likeOrUnlike, reportPost } = require('../controllers/post');
 const { providerList, singleProvider } = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
 const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat')
@@ -21,6 +21,8 @@ userRouter.get('/profile',verifyTokenUser,profile)
 userRouter.patch('/profile', upload.single('file'), verifyTokenUser, editProfile);
 
 userRouter.get('/feed', posts);
+
+userRouter.get('/details', verifyTokenUser, userDetails);
 
 userRouter.get('/providersList', providerList);
 
@@ -42,8 +44,13 @@ userRouter.post('/message', verifyTokenUser, createMessage);
 
 userRouter.get('/message/:chatId', verifyTokenUser, getMessages);
 
-userRouter.get('/pro/:providerId', singleProvider)
+userRouter.get('/pro/:providerId', singleProvider);
 
+userRouter.patch('/savePost/:postId', verifyTokenUser,savePost);
+
+userRouter.patch('/unsavePost/:postId',verifyTokenUser,unsavePost)
+
+userRouter.patch('/report/:postId',verifyTokenUser,reportPost)
 
 
 

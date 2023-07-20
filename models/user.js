@@ -44,6 +44,9 @@ const userSchema = new mongoose.Schema(
             maxlength: [8, 'The referral number cannot exceed 8 digits.'],
         },
         isBanned: { type: Boolean, default: false },
+        likedPost : {
+            type: Array,
+            ref: 'post',        }
     },
     {
         timestamps: true,

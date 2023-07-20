@@ -203,5 +203,51 @@ module.exports = {
             return res.status(500).json({ errMsg: 'Something went wrong' })
 
         }
+    },
+    userDetails: async (req, res) => {
+        try {
+            const {id} = req.payload;
+            const user = await User.findById(id).select('image likedPost');
+            res.status(200).json({user})
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    savePost : async(req,res) => {
+        try {
+            const {id} = req.payload;
+            const {postId} = req.params;
+            const user = await User.findById(id)
+
+            user.likedPost.push(postId);
+
+            await user.save();
+
+            const likedPost = user.likedPost;
+            res.status(200).json({ likedPost });
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    unsavePost : async(req,res) => {
+        try {
+            const { id } = req.payload;
+            const { postId } = req.params;
+            const user = await User.findById(id);
+
+            const updatedLikedPost = user.likedPost.filter((likedPostId) => likedPostId.toString() !== postId);
+            user.likedPost = updatedLikedPost;
+
+            await user.save();
+
+            const likedPost = user.likedPost;
+
+            res.status(200).json({ likedPost });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

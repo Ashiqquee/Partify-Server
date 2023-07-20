@@ -3,6 +3,7 @@ const cloudinary = require("cloudinary").v2;
 const mime = require("mime-types");
 const fs = require("fs");
 let msg, errMsg;
+const ObjectId = require('mongoose').Types.ObjectId;
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -59,6 +60,8 @@ module.exports = {
         }
     },
 
+    
+
     deletePost : async(req,res) => {
         
         try {
@@ -77,17 +80,17 @@ module.exports = {
     },
     providerPost : async(req,res) => {
         try {
-            // const { id } = req.payload;
+            const { id } = req.payload;
 
-            // const posts = await Post.find({ providerId: id }).populate({
-            //     path: 'providerId',
-            //     select: 'name profilePic'
-            // }).populate({
-            //     path: 'comments.userId',
-            //     select: 'name image'
-            // }).sort({ _id: -1 });;
+            const posts = await Post.find({ providerId: id }).populate({
+                path: 'providerId',
+                select: 'name profilePic'
+            }).populate({
+                path: 'comments.userId',
+                select: 'name image'
+            }).sort({ _id: -1 });;
 
-            // return res.status(200).json({ posts })
+            return res.status(200).json({ posts })
         } catch (error) {
             console.log(error);
         }
@@ -135,6 +138,20 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    reportPost : async(req,res) => {
+        try {
+            const {id} = req.payload;
+            const {postId} = req.params;
+            console.log(id,postId);
+            const post = await Post.findByIdAndUpdate(postId, { $addToSet: { reports: new ObjectId(id) } });
+        
+            return res.status(200).json({msg:'success'})
+            
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
    
 }
