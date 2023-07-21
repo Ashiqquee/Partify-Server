@@ -249,5 +249,27 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    getSavedPosts : async(req,res) => {
+        try {
+            const {id} = req.payload;
+
+            const user = await User.findById(id).populate({
+                path: 'likedPost',
+                populate: {
+                    path: 'providerId',
+                    model: 'provider'
+                }
+            })
+
+            const posts = user.likedPost;
+     
+
+
+            res.status(200).json({posts})
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
