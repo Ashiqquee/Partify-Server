@@ -68,9 +68,7 @@ module.exports = {
             const {postId} = req.params;
             
             
-           await Post.findByIdAndDelete(postId);
-
-            return res.status(200).json({msg:"Deleted"});
+           console.log(postId);
 
         } catch (error) {
             console.log(error);
