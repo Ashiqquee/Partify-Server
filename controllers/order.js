@@ -268,7 +268,10 @@ module.exports = {
 
     fullOrders: async(req,res) => {
         try {
-            const orders = await Order.find().sort({_id:-1});
+            const orders = await Order.find().populate({
+                path:'providerId',
+                select:'name'
+            }).sort({_id:-1});
 
             res.status(200).json({orders})
         } catch (error) {
