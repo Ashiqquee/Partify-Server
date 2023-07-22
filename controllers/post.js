@@ -82,7 +82,7 @@ module.exports = {
 
             const posts = await Post.find({ providerId: id }).populate({
                 path: 'providerId',
-                select: 'name profilePic'
+                select: 'name profilePic isUpgraded'
             }).populate({
                 path: 'comments.userId',
                 select: 'name image'

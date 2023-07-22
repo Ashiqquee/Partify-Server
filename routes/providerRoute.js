@@ -4,7 +4,7 @@ const providerRouter = express.Router();
 const multer = require('../config/multer');
 const upload = multer.createMulter();
 const { verifyTokenProvider } =  require('../middlewares/auth');
-const { signup, login, providerServices, removeService, addService, providerProfile, editProfile } = require('../controllers/provider');
+const { signup, login, providerServices, removeService, addService, providerProfile, editProfile, upgradePaymentLink,upgradeProvider } = require('../controllers/provider');
 const { serviceList } = require('../controllers/service');
 const { addPost, providerPost, deletePost } = require('../controllers/post');
 const { providerOrder, newOrder, providerSingleOrder,editOrder } = require('../controllers/order')
@@ -44,6 +44,10 @@ providerRouter.post('/message', verifyTokenProvider, createMessage);
 providerRouter.get('/chat', verifyTokenProvider, fetchProviderChat);
 
 providerRouter.get('/message/:chatId', verifyTokenProvider, getMessages);
+
+providerRouter.post('/payment', verifyTokenProvider, upgradePaymentLink);
+
+providerRouter.get('/upgrade/:providerId', upgradeProvider);
 
 
 module.exports = providerRouter;

@@ -7,6 +7,8 @@ const cloudinary = require("cloudinary").v2;
 const mime = require("mime-types");
 const fs = require("fs");
 const ObjectId = require('mongoose').Types.ObjectId;
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_KEY);
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -76,7 +78,7 @@ module.exports = {
 
     providerList : async(req,res) => {
         try {
-            const providerData = await Provider.find().populate('services');
+            const providerData = await Provider.find().populate('services').sort({isUpgraded:-1});
          
             res.status(200).json({providerData});
         } catch (error) {
@@ -291,6 +293,50 @@ module.exports = {
             console.log(error);
         }
     },
+    upgradePaymentLink : async(req,res) => {
+        try {
+            
+            const {id} = req.payload;
+            const session = await stripe.checkout.sessions.create({
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'inr',
+                            product_data: {
+                                name: 'Partify',
+                            },
+                            unit_amount: 399 * 100,
+                        },
+                        quantity: 1,
+                    },
+                ],
+                mode: 'payment',
+
+                success_url: `http://localhost:4000/provider/upgrade/${id}`,
+                cancel_url: 'http://localhost:5173/payment/fail',
+            });
+            console.log(session.url);
+            res.send({ url: session.url });
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    upgradeProvider : async(req,res) => {
+        try {
+            const {providerId} = req.params;
+
+            const provider = await Provider.findById(providerId);
+
+            provider.isUpgraded = true;
+
+            await provider.save();
+
+            res.redirect('http://localhost:5173/payment/success');
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
   
 

@@ -35,7 +35,10 @@ const providerSchema = new mongoose.Schema({
     profilePic:{type:String},
     coverPic: { type: String },
     description: { type: String },
-
+    isUpgraded:{
+        type:Boolean,
+        default:false
+    }
 
 
 });
