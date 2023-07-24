@@ -14,10 +14,10 @@ cloudinary.config({
 module.exports = {
     adsList : async(req,res) => {
         try {
-            const adsList = await Ad.find();
+            const adsList = await Ad.find().sort({_id:-1});
 
             res.status(200).json({adsList});
-
+           
         } catch (error) {
             console.log(error);
             res.status(500).json({ errMsg: 'Something went wrong' })
@@ -46,11 +46,12 @@ module.exports = {
                 return res.status(400).json({ status: false, errMsg: "File is not a image" });
             };
 
-            const newAd = Ad.create({
+            const newAd =await Ad.create({
                 name,
                 adLink:link,
                 adImage:image
             });
+            console.log(newAd);
 
             res.status(200)?.json({ newAd });
 
