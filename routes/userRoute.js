@@ -45,7 +45,7 @@ userRouter.post('/message', verifyTokenUser, createMessage);
 
 userRouter.get('/message/:chatId', verifyTokenUser, getMessages);
 
-userRouter.get('/pro/:providerId', singleProvider);
+userRouter.get('/user/:providerId', singleProvider);
 
 userRouter.patch('/savePost/:postId', verifyTokenUser,savePost);
 

@@ -285,7 +285,7 @@ module.exports = {
         try {
             const {providerId} = req.params;
 
-            const provider = await Provider.findById(providerId).populate('services');
+            const provider = await Provider.findById(providerId).select('-password').populate('services');
 
             res.status(200).json({provider})
 
@@ -321,7 +321,7 @@ module.exports = {
             console.log(error);
         }
     },
-    
+
     upgradeProvider : async(req,res) => {
         try {
             const {providerId} = req.params;
