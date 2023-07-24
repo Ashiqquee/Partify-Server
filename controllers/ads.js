@@ -58,5 +58,16 @@ module.exports = {
         } catch (error) {
            console.log(error); 
         }
+    },
+
+    deleteAd : async(req,res) => {
+        try {
+            const {adId} = req.params;
+            await Ad.findByIdAndDelete(adId);
+            res.status(200).json({msg:"success"});
+            
+        } catch (error) {
+            console.log(error);
+        }
     }
 }

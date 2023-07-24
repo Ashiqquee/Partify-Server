@@ -8,7 +8,7 @@ const { addService, serviceList, editServices } = require('../controllers/servic
 const { providerList, confirmProvider ,blockProvider,unBlockProvider,} = require('../controllers/provider')
 const { posts, deletePost } = require('../controllers/post');
 const { fullOrders,singleOrder } = require('../controllers/order');
-const {addAds,adsList} = require('../controllers/ads')
+const {addAds,adsList,deleteAd} = require('../controllers/ads')
 const adminRouter = express.Router();  
 
 adminRouter.post('/login',login);
@@ -51,6 +51,9 @@ adminRouter.get('/frequentProviders', frequentProviders);
 adminRouter.post('/ads', upload.single('file'),verifyTokenAdmin,addAds);
 
 adminRouter.get('/ads',verifyTokenAdmin,adsList)
+
+adminRouter.delete('/ads/:adId', verifyTokenAdmin,deleteAd );
+
 
 
 

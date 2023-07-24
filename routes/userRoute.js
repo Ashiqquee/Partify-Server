@@ -55,6 +55,8 @@ userRouter.patch('/report/:postId',verifyTokenUser,reportPost)
 
 userRouter.get('/favPosts', verifyTokenUser, getSavedPosts)
 
-userRouter.get('/ads',adsList)
+userRouter.get('/ads',adsList);
+
+
 
 module.exports = userRouter;
