@@ -321,6 +321,7 @@ module.exports = {
             console.log(error);
         }
     },
+    
     upgradeProvider : async(req,res) => {
         try {
             const {providerId} = req.params;
@@ -336,7 +337,9 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+
+    
 
   
 
