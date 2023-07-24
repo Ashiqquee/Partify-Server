@@ -30,7 +30,7 @@ module.exports = {
 
     addService: async (req, res) => {
         const { file, body: { name } } = req;
-        console.log(file);
+    
        try {
            let serviceName = name.toLowerCase()
            let image;
