@@ -271,5 +271,32 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    forgotPassword : async(req,res) => {
+        try {
+            console.log(req.body);
+            const {check,phone,password} = req.body;
+     
+            if(check === 'yes'){
+                const user = await User.findOne({phone});
+
+                if(!user) return res.status(400).json({errMsg:"User not found"});
+
+                return res.status(200).json({msg:"User found"});
+            };
+
+            const user = await User.findOne({phone});
+
+            user.password = sha256(password + process.env.PASSWORD_SALT);
+
+            await user.save();
+
+            return res.status(200).json({msg:"Password changed successfully"});
+
+
+        } catch (error) {
+           console.log(error); 
+        }
     }
 }

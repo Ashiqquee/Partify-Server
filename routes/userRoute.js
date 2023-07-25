@@ -1,6 +1,6 @@
 const express = require('express');
 const { verifyTokenUser } = require('../middlewares/auth');
-const { signup, login, editProfile, profile, googleLogin, userDetails, savePost, unsavePost, getSavedPosts } = require('../controllers/user');
+const { signup, login, editProfile, profile, googleLogin, userDetails, savePost, unsavePost, getSavedPosts,forgotPassword } = require('../controllers/user');
 const { posts, likeOrUnlike, reportPost, postByProvider } = require('../controllers/post');
 const { providerList, singleProvider } = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
@@ -65,7 +65,9 @@ userRouter.post('/review/:providerId', verifyTokenUser, addReview);
 
 userRouter.get('/review/:providerId',  getReview);
 
-userRouter.get('/services', serviceList)
+userRouter.get('/services', serviceList);
+
+userRouter.patch('/forgotPassword', forgotPassword)
 
 
 
