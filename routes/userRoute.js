@@ -67,7 +67,7 @@ userRouter.get('/review/:providerId',  getReview);
 
 userRouter.get('/services', serviceList);
 
-userRouter.patch('/forgotPassword', forgotPassword)
+userRouter.patch('/forgotPassword', forgotPassword);
 
 
 
