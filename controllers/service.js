@@ -107,6 +107,7 @@ module.exports = {
             res.status(500).json({ errMsg: 'Server Error' });
             
         }
-    }
+    },
+
 
 }

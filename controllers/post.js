@@ -151,5 +151,22 @@ module.exports = {
             console.log(error);
         }
     },
+    postByProvider: async (req, res) => {
+        try {
+            const { providerId } = req.params;
+
+            const posts = await Post.find({ providerId}).populate({
+                path: 'providerId',
+                select: 'name profilePic isUpgraded'
+            }).populate({
+                path: 'comments.userId',
+                select: 'name image'
+            }).sort({ _id: -1 });;
+
+            return res.status(200).json({ posts })
+        } catch (error) {
+            console.log(error);
+        }
+    },
    
 }

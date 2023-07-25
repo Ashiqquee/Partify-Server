@@ -152,7 +152,10 @@ module.exports = {
 
     providerServices : async(req,res) => {
         try {
+
+           
             const {id} = req.payload;
+
             const services = await Provider.findById(id).populate('services');
            
             const serviceList = services.services;
@@ -338,6 +341,8 @@ module.exports = {
             console.log(error);
         }
     },
+
+    
 
     
 
