@@ -6,7 +6,7 @@ const { providerList, singleProvider } = require('../controllers/provider');
 const { userOrders, userSingleOrder,orderSuccess,paymentLink } = require('../controllers/order');
 const { createChat, fetchUserChat, createMessage, getMessages } = require('../controllers/chat');
 const {adsList} = require('../controllers/ads');
-const {addReview} = require('../controllers/review')
+const { addReview, getReview } = require('../controllers/review')
 const multer = require('../config/multer');
 const upload = multer.createMulter();
 const userRouter = express.Router();
@@ -61,6 +61,9 @@ userRouter.get('/favPosts', verifyTokenUser, getSavedPosts);
 userRouter.get('/ads', adsList);
 
 userRouter.post('/review/:providerId', verifyTokenUser, addReview);
+
+userRouter.get('/review/:providerId',  getReview);
+
 
 
 

@@ -22,5 +22,18 @@ module.exports = {
         } catch (error) {
            console.log(error); 
         }
+    },
+  getReview : async (req,res) => {
+    try {
+      const {providerId} = req.params;
+      const reviews = await Review.find({providerId}).populate({
+        path:'userId',
+        select:'name image'
+      });
+
+      res.status(200).json({reviews});
+    } catch (error) {
+      console.log(error);
     }
+  }
 }
