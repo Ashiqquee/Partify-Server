@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 
 const providerSchema = new mongoose.Schema({
-    name:{
-        required:true,
-        type:String,
-        trim:true,
+    name: {
+        required: true,
+        type: String,
+        trim: true,
     },
-    phone:{
+    phone: {
         required: true,
         type: Number,
         trim: true,
@@ -32,13 +32,14 @@ const providerSchema = new mongoose.Schema({
     },
     isBanned: { type: Boolean, default: false },
     adminConfirmed: { type: Boolean, default: false },
-    profilePic:{type:String},
+    profilePic: { type: String },
     coverPic: { type: String },
     description: { type: String },
-    isUpgraded:{
-        type:Boolean,
-        default:false
-    }
+    isUpgraded: {
+        type: Boolean,
+        default: false
+    },
+    
 
 
 });
