@@ -168,15 +168,22 @@ module.exports = {
             console.log(error);
         }
     },
-   totalLikes : async(req,res) => {
+   totalInteraction : async(req,res) => {
     try {
-        const posts = await Post.find({ providerId:'649bbd64cc36749413be103c'});
+
+        const {id} = req.payload;
+        const posts = await Post.find({ providerId: id });
 
         if(posts){
             const likes = posts.map((post) => post.likes);
-            console.log(likes.flat().length);
+            const comments = posts.map((post) => post.comments);
+            
+            const interaction = likes?.flat()?.length + comments?.flat()?.length;
+            return res.status(200).json({ interaction })
 
         }
+
+        
 
 
     } catch (error) {

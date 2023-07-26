@@ -6,7 +6,7 @@ const upload = multer.createMulter();
 const { verifyTokenProvider } =  require('../middlewares/auth');
 const { signup, login, providerServices, removeService, addService, providerProfile, editProfile, upgradePaymentLink, upgradeProvider, forgotPassword, dashboardItems } = require('../controllers/provider');
 const { serviceList } = require('../controllers/service');
-const { addPost, providerPost, deletePost,totalLikes } = require('../controllers/post');
+const { addPost, providerPost, deletePost, totalInteraction } = require('../controllers/post');
 const { providerOrder, newOrder, providerSingleOrder,editOrder,monthlySalesGraph } = require('../controllers/order')
 const { fetchProviderChat, getMessages, createMessage } = require('../controllers/chat')
 providerRouter.get('/serviceList', serviceList);
@@ -51,9 +51,7 @@ providerRouter.get('/upgrade/:providerId', upgradeProvider);
 
 providerRouter.get('/dashboard',verifyTokenProvider, monthlySalesGraph);
 
-providerRouter.get('/totalLikes', totalLikes);
-
-
+providerRouter.get('/interaction', verifyTokenProvider,totalInteraction);
 
 
 providerRouter.patch('/forgotPassword', forgotPassword)

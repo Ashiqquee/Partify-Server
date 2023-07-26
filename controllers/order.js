@@ -362,7 +362,7 @@ module.exports = {
                 };
                 return monthOrder[a.x] - monthOrder[b.x];
             });
-            console.log(result);
+
             return res.status(200).json({ result })
 
         } catch (error) {
