@@ -183,8 +183,57 @@ module.exports = {
 
         }
 
+    } catch (error) {
+        console.log(error);
+    }
+   },
+
+    mostInteractedPost : async(req,res) => {
+    try {
+
+        const {id} = req.payload;
+
+        const mostInteractedPost = await Post.aggregate([
+            {
+                $match: {
+                    providerId: new ObjectId(id)
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    likes: 1,
+                    comments: 1,
+                    num_likes: { $size: "$likes" },
+                    num_comments: { $size: "$comments" }
+                }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    max_likes: { $max: "$num_likes" },
+                    max_comments: { $max: "$num_comments" }
+                }
+            },
+            {
+                $sort: {
+                    max_likes: -1,
+                    max_comments: -1
+                }
+            },
+            {
+                $limit: 3
+            }
+        ]);
+
+        const postIds = mostInteractedPost.map(post => post._id);
+     
+
+        const posts = await Post.find({ _id: { $in: postIds } }, { postImages: 1, createdAt: 1 });
         
 
+
+        res.status(200).json({posts});
 
     } catch (error) {
         console.log(error);
