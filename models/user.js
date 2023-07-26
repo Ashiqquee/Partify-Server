@@ -46,7 +46,21 @@ const userSchema = new mongoose.Schema(
         isBanned: { type: Boolean, default: false },
         likedPost : {
             type: Array,
-            ref: 'post',        }
+            ref: 'post',        },
+        notifications:[{
+            from : {
+                type:String,
+                required:true,
+            },
+            content:{
+                type:String,
+                required:true
+            },
+            sendedAt:{
+                type:Date,
+                default:Date.now()
+            }
+        }]
     },
     {
         timestamps: true,

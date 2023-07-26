@@ -168,5 +168,19 @@ module.exports = {
             console.log(error);
         }
     },
-   
+   totalLikes : async(req,res) => {
+    try {
+        const posts = await Post.find({ providerId:'649bbd64cc36749413be103c'});
+
+        if(posts){
+            const likes = posts.map((post) => post.likes);
+            console.log(likes.flat().length);
+
+        }
+
+
+    } catch (error) {
+        console.log(error);
+    }
+   }
 }

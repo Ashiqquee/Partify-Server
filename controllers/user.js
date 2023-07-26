@@ -264,10 +264,13 @@ module.exports = {
             })
 
             const posts = user.likedPost;
-     
+            
+            const notification = user.notifications;
 
 
-            res.status(200).json({posts})
+
+
+            res.status(200).json({posts,notification})
         } catch (error) {
             console.log(error);
         }
@@ -275,7 +278,7 @@ module.exports = {
 
     forgotPassword : async(req,res) => {
         try {
-            console.log(req.body);
+      
             const {check,phone,password} = req.body;
      
             if(check === 'yes'){

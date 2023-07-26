@@ -31,10 +31,12 @@ module.exports = {
 
             const user = await User.findOne({phone});
 
-            const provider = await Provider.findById(id).select('places');
-            
+            const provider = await Provider.findById(id).select('places name');
+            const serviceDistrict = provider.places[0].split(',').join();
            
-            if (!provider.places.includes('All Kerala') && !provider.places.includes(district)) return res.status(400).json({errMsg:'You are not providing services to this district.Update your profile'});
+           
+           
+            if (!serviceDistrict.includes('All Kerala') && !serviceDistrict.includes(district)) return res.status(400).json({errMsg:'You are not providing services to this district.Update your profile'});
        
 
             if(!user){
@@ -61,6 +63,14 @@ module.exports = {
 
             const newOrder = await Order.populate(order,{path:'customerId',select:'name'});
 
+            const notification = {
+                from :provider.name,
+                content:"an order has been created"
+            }
+
+             user.notifications.push(notification);
+
+             await user.save();
             return res.status(200).json({newOrder});
 
         } catch (error) {
@@ -297,7 +307,7 @@ module.exports = {
 
     monthlySalesGraph: async (req, res) => {
         try {
-            // const {id} = req.payload;
+            const {id} = req.payload;
             const getCurrentDate = () => moment().startOf('day').toDate();
             const getDate12MonthsAgo = () => moment().subtract(11, 'months').startOf('month').toDate();
 
@@ -307,7 +317,7 @@ module.exports = {
                     $gte: getDate12MonthsAgo(),
                     $lte: getCurrentDate(),
                 },
-                'providerId':'649bbd64cc36749413be103c'
+                'providerId':id
             });
 
             const allMonths = [];
@@ -358,7 +368,9 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+
+   
     
 
 }

@@ -287,6 +287,8 @@ module.exports = {
     singleProvider: async(req,res) => {
         try {
             const {providerId} = req.params;
+            
+            if (ObjectId.isValid(providerId) === false) res.status(400).json({ errMsg: "Bad Request" })
 
             const provider = await Provider.findById(providerId).select('-password').populate('services');
 
@@ -344,7 +346,7 @@ module.exports = {
 
     forgotPassword : async(req,res) => {
         try {
-            console.log(req.body);
+           
             const { check, phone, password } = req.body;
 
             if (check === 'yes') {
@@ -367,8 +369,15 @@ module.exports = {
         } catch (error) {
             console.log(error);
         }
-    }
+    },
+    dashboardItems: async (req, res) => {
+        try {
+            
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
 
   
