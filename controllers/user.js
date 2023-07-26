@@ -265,7 +265,7 @@ module.exports = {
 
             const posts = user.likedPost;
             
-            const notification = user.notifications;
+            const notification = user.notifications.reverse();
 
 
 
