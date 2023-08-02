@@ -271,13 +271,8 @@ module.exports = {
 
             await order.save();
 
-            await order.populate({
-                path: 'customerId',
-                select: 'name phone ',
-               
-            }).populate({path:"providerId",select:'name phone'}).populate({path:'services', select:'serviceName serviceImage'}).execPopulate();
-            console.log(order);
-            res.status(200).json({ msg: 'edited successfully',order });
+            const updatedOrder = await Order.findById(orderId).populate('customerId').populate('providerId').populate('services');
+            res.status(200).json({ msg: 'edited successfully', updatedOrder });
 
         } catch (error) {
             console.log(error);
