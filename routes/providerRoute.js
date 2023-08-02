@@ -49,7 +49,7 @@ providerRouter.post('/payment', verifyTokenProvider, upgradePaymentLink);
 
 providerRouter.get('/upgrade/:providerId', upgradeProvider);
 
-providerRouter.get('/dashboard', monthlySalesGraph);
+providerRouter.get('/dashboard',verifyTokenProvider, monthlySalesGraph);
 
 providerRouter.get('/interaction', verifyTokenProvider,totalInteraction);
 
