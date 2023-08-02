@@ -317,8 +317,8 @@ module.exports = {
                 ],
                 mode: 'payment',
 
-                success_url: `http://localhost:4000/provider/upgrade/${id}`,
-                cancel_url: 'http://localhost:5173/payment/fail',
+                success_url: `https://partify.shop/provider/upgrade/${id}`,
+                cancel_url: `${process.env.FRONTEND_URL}payment/fail`,
             });
             console.log(session.url);
             res.send({ url: session.url });
@@ -337,7 +337,7 @@ module.exports = {
 
             await provider.save();
 
-            res.redirect('http://localhost:5173/payment/success');
+            res.redirect(`${process.env.FRONTEND_URL}payment/success`);
 
         } catch (error) {
             console.log(error);

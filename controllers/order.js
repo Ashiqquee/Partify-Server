@@ -172,7 +172,7 @@ module.exports = {
                 ],
                 mode: 'payment',
 
-                success_url: `http://localhost:4000/orderSuccess/${orderId}?wallet=${wallet}&selectedOption=${selectedOption}&stripe=yes`,
+                success_url: `https://partify.shop/orderSuccess/${orderId}?wallet=${wallet}&selectedOption=${selectedOption}&stripe=yes`,
                 cancel_url: `${process.env.FRONTEND_URL}payment/fail`,
             });
 
