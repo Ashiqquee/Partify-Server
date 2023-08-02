@@ -49,13 +49,11 @@ providerRouter.post('/payment', verifyTokenProvider, upgradePaymentLink);
 
 providerRouter.get('/upgrade/:providerId', upgradeProvider);
 
-providerRouter.get('/dashboard',verifyTokenProvider, monthlySalesGraph);
+providerRouter.get('/dashboard', monthlySalesGraph);
 
 providerRouter.get('/interaction', verifyTokenProvider,totalInteraction);
 
 providerRouter.get('/mostLiked', verifyTokenProvider, mostInteractedPost);
-
-
 
 providerRouter.patch('/forgotPassword', forgotPassword)
 

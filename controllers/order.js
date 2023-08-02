@@ -364,7 +364,21 @@ module.exports = {
                 return monthOrder[a.x] - monthOrder[b.x];
             });
 
-            return res.status(200).json({ result })
+            totalRevenue = await Order.aggregate([
+                {
+                    $match: { providerId: new ObjectId(id) }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        totalAmountSum: { $sum: '$totalAmount' }
+                    }
+                }
+            ])
+ 
+            console.log(totalRevenue);
+            return res.status(200).json({ result, totalRevenue });
+
 
         } catch (error) {
             console.log(error);
