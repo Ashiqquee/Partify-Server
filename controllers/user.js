@@ -16,6 +16,7 @@ module.exports = {
     signup: async (req, res) => {
         try {
             const { name, email, phone, password,referalCode } = req.body;
+            
             const exsistingUser = await User.findOne({ $or: [{ email }, { phone }] });
             console.log(exsistingUser);
             if (exsistingUser) return res.status(409).json({ errMsg: "User already found" });
@@ -54,7 +55,8 @@ module.exports = {
     login: async (req, res) => {
         try {
             const { phone, password } = req.body;
-
+            const users = await User.find();
+            console.log(users);
             const exsistingUser = await User.findOne({ phone, });
 
             if (!exsistingUser) return res.status(401).json({ errMsg: "User not found" });
