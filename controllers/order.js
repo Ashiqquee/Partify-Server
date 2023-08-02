@@ -173,7 +173,7 @@ module.exports = {
                 mode: 'payment',
 
                 success_url: `http://localhost:4000/orderSuccess/${orderId}?wallet=${wallet}&selectedOption=${selectedOption}&stripe=yes`,
-                cancel_url: 'http://localhost:5173/payment/fail',
+                cancel_url: `${process.env.FRONTEND_URL}payment/fail`,
             });
 
             res.send({ url: session.url });
@@ -205,7 +205,7 @@ module.exports = {
 
             if (stripe === 'no')  return res.status(200).json({msg:'order confirmed'})
 
-            res.redirect('http://localhost:5173/payment/success');
+            res.redirect(`${process.env.FRONTEND_URL}payment/success`);
 
         } catch (error) {
             console.log(error);
