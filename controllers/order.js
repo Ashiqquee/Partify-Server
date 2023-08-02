@@ -93,6 +93,7 @@ module.exports = {
 
        
            if (order.providerId?._id?.toString() !== id) return res.status(400).json({ errMsg: "Bad Request" });
+        
 
        
            return res.status(200).json({ order })
@@ -129,7 +130,7 @@ module.exports = {
             if (order.customerId?._id?.toString() !== id) return res.status(400).json({ errMsg: "Bad Request" });
 
 
-            return res.status(200).json({ order })
+            return res.status(200).json({ order });
         } catch (error) {
             console.log(error);
         }
