@@ -33,7 +33,7 @@ const server = index.listen(process.env.PORT, () => console.log(`Server connecte
 const io = require('socket.io')(server,{
     pingTimeOut:60000,
     cors:{
-        origin:'https://partiffy.netlify.app/'
+        origin:'*'
     }
 });
 
