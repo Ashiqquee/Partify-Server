@@ -33,7 +33,7 @@ const server = index.listen(process.env.PORT, () => console.log(`Server connecte
 const io = require('socket.io')(server,{
     pingTimeOut:60000,
     cors:{
-        origin:'http://localhost:5173'
+        origin: process.env.FRONTEND_URL
     }
 });
 
