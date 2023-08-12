@@ -354,6 +354,8 @@ module.exports = {
 
                 if (!provider) return res.status(400).json({ errMsg: "User not found" });
 
+                if (provider.isBanned) return res.status(401).json({ errMsg: "provider Blocked" });
+
                 return res.status(200).json({ msg: "User found" });
             };
 
@@ -370,14 +372,7 @@ module.exports = {
             console.log(error);
         }
     },
-    dashboardItems: async (req, res) => {
-        try {
-            
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    
     
 
   
