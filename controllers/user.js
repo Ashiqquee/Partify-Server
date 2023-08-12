@@ -288,6 +288,8 @@ module.exports = {
 
                 if(!user) return res.status(400).json({errMsg:"User not found"});
 
+                if (user.isBanned) return res.status(401).json({ errMsg: "User Blocked" });
+
                 return res.status(200).json({msg:"User found"});
             };
 
