@@ -88,6 +88,9 @@ module.exports = {
 
            if(!user) return res.status(402).json({errMsg:'User not found'});
 
+           if (user.isBanned) return res.status(401).json({ errMsg: "User Blocked" });
+
+
            const token = generateToken(user._id, 'user');
 
 
