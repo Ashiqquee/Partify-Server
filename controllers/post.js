@@ -1,15 +1,11 @@
 const Post = require('../models/post');
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../config/cloudinary");
 const mime = require("mime-types");
 const fs = require("fs");
 let msg, errMsg;
 const ObjectId = require('mongoose').Types.ObjectId;
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+
 
 module.exports = {
     addPost: async(req,res) => {
