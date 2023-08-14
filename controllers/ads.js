@@ -1,15 +1,10 @@
 const Ad = require('../models/ads');
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../config/cloudinary");
 const mime = require("mime-types");
 const fs = require("fs");
 let msg, errMsg;
 
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 module.exports = {
     adsList : async(req,res) => {
