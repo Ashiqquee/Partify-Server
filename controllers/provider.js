@@ -3,18 +3,14 @@ const Provider = require('../models/provider');
 const sha256 = require('js-sha256');
 const { generateToken } = require('../middlewares/auth');
 const mongoose = require('mongoose');
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../config/cloudinary");
 const mime = require("mime-types");
 const fs = require("fs");
 const ObjectId = require('mongoose').Types.ObjectId;
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_KEY);
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+
 
 let msg, errMsg;
 module.exports = {
