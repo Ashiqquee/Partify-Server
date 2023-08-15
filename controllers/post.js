@@ -38,7 +38,7 @@ module.exports = {
             res.status(200).json({msg:"post added"})
         } catch (error) {
             res.status(500).json({ errMsg: 'Server Error' });
-            console.log(error);
+           
         }
     },
 
@@ -50,7 +50,7 @@ module.exports = {
          
             return res.status(200).json({ post});
         } catch (error) {
-            console.log(error);
+           
             res.status(500).json({ errMsg: 'Server Error' });
 
         }
@@ -63,11 +63,12 @@ module.exports = {
         try {
             const {postId} = req.params;
             
+            await Post.findByIdAndDelete(postId);
             
-           console.log(postId);
+           res.status(200).json({msg:"post deleted"});
 
         } catch (error) {
-            console.log(error);
+           
             res.status(500).json({ errMsg: 'Server Error' });
 
         }
@@ -86,7 +87,8 @@ module.exports = {
 
             return res.status(200).json({ posts })
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     },
 
@@ -94,8 +96,7 @@ module.exports = {
         try {
             const { like, comment } = req.body;
             const { postId } = req.params;
-            console.log(comment);
-            console.log(postId);
+            
             const post = await Post.findById(postId);
 
             if (like === 'yes') {
@@ -130,21 +131,22 @@ module.exports = {
                 res.status(200).json({ updatedPost })
             }
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     },
     reportPost : async(req,res) => {
         try {
             const {id} = req.payload;
             const {postId} = req.params;
-            console.log(id,postId);
+            
             const post = await Post.findByIdAndUpdate(postId, { $addToSet: { reports: new ObjectId(id) } });
         
             return res.status(200).json({msg:'success'})
             
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
         }
     },
     postByProvider: async (req, res) => {
@@ -161,7 +163,8 @@ module.exports = {
 
             return res.status(200).json({ posts })
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     },
    totalInteraction : async(req,res) => {
@@ -180,7 +183,8 @@ module.exports = {
         }
 
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ errMsg: "Something went wrong" });
+
     }
    },
 
@@ -232,7 +236,8 @@ module.exports = {
         res.status(200).json({posts});
 
     } catch (error) {
-        console.log(error);
+        res.status(500).json({ errMsg: "Something went wrong" });
+
     }
    }
 }

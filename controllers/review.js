@@ -15,12 +15,13 @@ module.exports = {
             userId:id,
           });
 
-          console.log(review);
+   
 
           res.status(200).json({msg:"Success"});
 
         } catch (error) {
-           console.log(error); 
+          res.status(500).json({ errMsg: "Something went wrong" });
+ 
         }
     },
   getReview : async (req,res) => {
@@ -33,7 +34,7 @@ module.exports = {
 
       res.status(200).json({reviews});
     } catch (error) {
-      console.log(error);
+      res.status(500).json({ errMsg: "Something went wrong" });
     }
   }
 }

@@ -68,7 +68,8 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -78,15 +79,14 @@ module.exports = {
          
             res.status(200).json({providerData});
         } catch (error) {
-            console.log(error);
-            res.status(500).json({ errMsg: 'Something went wrong' })
+            res.status(500).json({ errMsg: "Something went wrong" });
         }
     },
 
     confirmProvider : async(req,res) => {
         try {
             const {providerId} = req.params;
-           console.log(providerId+"pppp");
+         
             const provider = await Provider.findById(providerId);
 
             if (!provider) return res.status(400).json({ errMsg: 'Provider Not Found' })
@@ -99,8 +99,8 @@ module.exports = {
 
 
         } catch (error) {
-          console.log(error);  
-            res.status(500).json({ errMsg: 'Something went wrong' })
+            res.status(500).json({ errMsg: "Something went wrong" });
+
 
         }
     },
@@ -142,7 +142,8 @@ module.exports = {
 
         } catch (error) {
             return res.status(500).json({ errMsg: 'Something went wrong' });
-            console.log(error);
+         
+            
         }
     },
 
@@ -162,7 +163,8 @@ module.exports = {
 
             res.status(200).json({ serviceList,remainingServices })
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -178,7 +180,8 @@ module.exports = {
             return res.status(200).json({ updatedService });
             
         } catch (error) {
-            console.log(error);
+            
+            
             return res.status(500).json({ errMsg: 'Something went wrong' });
         }
     },
@@ -199,7 +202,8 @@ module.exports = {
 
         
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -216,7 +220,8 @@ module.exports = {
           res.status(200).json({profile})
           
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -276,7 +281,8 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -291,7 +297,8 @@ module.exports = {
             res.status(200).json({provider})
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
     upgradePaymentLink : async(req,res) => {
@@ -316,10 +323,11 @@ module.exports = {
                 success_url: `https://partify.shop/provider/upgrade/${id}`,
                 cancel_url: `${process.env.FRONTEND_URL}payment/fail`,
             });
-            console.log(session.url);
+            
             res.send({ url: session.url });
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -336,7 +344,8 @@ module.exports = {
             res.redirect(`${process.env.FRONTEND_URL}payment/success`);
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -365,7 +374,8 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
     

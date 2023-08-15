@@ -14,7 +14,7 @@ module.exports = {
             res.status(200).json({adsList});
            
         } catch (error) {
-            console.log(error);
+           
             res.status(500).json({ errMsg: 'Something went wrong' })
 
         }
@@ -22,7 +22,7 @@ module.exports = {
 
     addAds : async(req,res) => {
         const { file, body: { name, link } } = req;
-        console.log(file);
+       
 
         try {
             let image;
@@ -46,12 +46,13 @@ module.exports = {
                 adLink:link,
                 adImage:image
             });
-            console.log(newAd);
+            
 
             res.status(200)?.json({ newAd });
 
         } catch (error) {
-           console.log(error); 
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     },
 
@@ -62,7 +63,8 @@ module.exports = {
             res.status(200).json({msg:"success"});
             
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     }
 }

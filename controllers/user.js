@@ -1,16 +1,11 @@
 const User = require('../models/user');
 const sha256 = require('js-sha256');
 const { generateToken } = require('../middlewares/auth');
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('../config/cloudinary');
 let msg, errMsg;
 const mime = require("mime-types");
 const fs = require("fs");
 
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 module.exports = {
     signup: async (req, res) => {
@@ -18,7 +13,7 @@ module.exports = {
             const { name, email, phone, password,referalCode } = req.body;
             
             const exsistingUser = await User.findOne({ $or: [{ email }, { phone }] });
-            console.log(exsistingUser);
+            
             if (exsistingUser) return res.status(409).json({ errMsg: "User already found" });
 
             if(referalCode){
@@ -56,7 +51,7 @@ module.exports = {
         try {
             const { phone, password } = req.body;
             const users = await User.find();
-            console.log(users);
+            
             const exsistingUser = await User.findOne({ phone, });
 
             if (!exsistingUser) return res.status(401).json({ errMsg: "User not found" });
@@ -75,7 +70,8 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
     googleLogin: async(req,res) => {
@@ -84,7 +80,6 @@ module.exports = {
             
            const user = await User.findOne({email:userEmail});
 
-           console.log(user);
 
            if(!user) return res.status(402).json({errMsg:'User not found'});
 
@@ -97,7 +92,8 @@ module.exports = {
             return res.status(200).json({ name: user?.name, token, role: 'user', id:user?._id});
            
         } catch (error) {
-            
+            res.status(500).json({ errMsg: "Something went wrong" });
+
         }
     },
 
@@ -106,7 +102,8 @@ module.exports = {
             const userData = await User.find();
             res.status(200).json({ userData });
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -192,7 +189,6 @@ module.exports = {
 
 
         } catch (error) {
-            console.log(error);
             return res.status(500).json({ errMsg: 'Something went wrong' })
 
         }
@@ -204,7 +200,6 @@ module.exports = {
         const user = await User.findById(id);
         res.status(200).json({user});
         } catch (error) {
-            console.log(error);
             return res.status(500).json({ errMsg: 'Something went wrong' })
 
         }
@@ -215,7 +210,8 @@ module.exports = {
             const user = await User.findById(id).select('image likedPost');
             res.status(200).json({user})
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -233,7 +229,8 @@ module.exports = {
             res.status(200).json({ likedPost });
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
     unsavePost : async(req,res) => {
@@ -252,7 +249,8 @@ module.exports = {
             res.status(200).json({ likedPost });
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -277,7 +275,8 @@ module.exports = {
 
             res.status(200).json({posts,notification})
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -306,7 +305,8 @@ module.exports = {
 
 
         } catch (error) {
-           console.log(error); 
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     }
 }

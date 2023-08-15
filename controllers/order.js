@@ -18,7 +18,8 @@ module.exports = {
            res.status(200).json({orders})
         } catch (error) {
             
-           console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+           
         }
     },
 
@@ -74,7 +75,8 @@ module.exports = {
             return res.status(200).json({newOrder});
 
         } catch (error) {
-           console.log(error); 
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -98,7 +100,8 @@ module.exports = {
        
            return res.status(200).json({ order })
        } catch (error) {
-        console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+        
        }
 
     },
@@ -126,13 +129,14 @@ module.exports = {
 
             if (!order) return res.status(400).json({ errMsg: "Bad Request" })
 
-            console.log(order.customerId?._id?.toString() === id);
+           
             if (order.customerId?._id?.toString() !== id) return res.status(400).json({ errMsg: "Bad Request" });
 
 
             return res.status(200).json({ order });
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
 
     },
@@ -178,7 +182,8 @@ module.exports = {
 
             res.send({ url: session.url });
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -186,11 +191,11 @@ module.exports = {
         try {
             const {orderId} = req.params;
             const { wallet, selectedOption, stripe } = req.query;
-            console.log(wallet,selectedOption);
+            
             const order = await Order.findById(orderId);
 
             order.remainingAmount = (selectedOption === 'fullAmount' ? 0 : order?.totalAmount - order?.advanceAmount);
-            console.log(order.remainingAmount);
+            
             order.advancePaymentDate = Date.now();
 
             order.status = 'confirmed';
@@ -208,7 +213,8 @@ module.exports = {
             res.redirect(`${process.env.FRONTEND_URL}payment/success`);
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
     editOrder:async(req,res) => {
@@ -232,7 +238,7 @@ module.exports = {
 
                 user.wallet += order.totalAmount - order.remainingAmount;
 
-                console.log(user.wallet);
+                
 
                 await user.save();
                 
@@ -275,7 +281,8 @@ module.exports = {
             res.status(200).json({ msg: 'edited successfully', updatedOrder });
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -288,7 +295,8 @@ module.exports = {
 
             res.status(200).json({orders})
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -303,7 +311,8 @@ module.exports = {
 
             return res.status(200).json({order})
         } catch (error) {
-           console.log(error); 
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
@@ -377,12 +386,13 @@ module.exports = {
                 }
             ])
  
-            console.log(totalRevenue);
+           
             return res.status(200).json({ result, totalRevenue });
 
 
         } catch (error) {
-            console.log(error);
+            res.status(500).json({ errMsg: "Something went wrong" });
+            
         }
     },
 
