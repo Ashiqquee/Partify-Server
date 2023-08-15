@@ -45,7 +45,7 @@ module.exports = {
     posts : async(req,res) => {
         
         try {
-            const ITEMS_PER_PAGE = 3;
+            const ITEMS_PER_PAGE = 10;
             const { page } = req.query;
             console.log(page);
             const currentPage = parseInt(page) || 1;
