@@ -47,7 +47,7 @@ module.exports = {
         try {
             const ITEMS_PER_PAGE = 3;
             const { page } = req.query;
-
+            console.log(page);
             const currentPage = parseInt(page) || 1;
             const skipCount = (currentPage - 1) * ITEMS_PER_PAGE;
 
