@@ -45,8 +45,13 @@ module.exports = {
     posts : async(req,res) => {
         
         try {
-            
-            const post = await Post.find().populate('providerId').populate('comments.userId').sort({ _id: -1 });
+            const ITEMS_PER_PAGE = 3;
+            const { page } = req.query;
+
+            const currentPage = parseInt(page) || 1;
+            const skipCount = (currentPage - 1) * ITEMS_PER_PAGE;
+
+            const post = await Post.find().populate('providerId').populate('comments.userId').sort({ _id: -1 }).skip(skipCount).limit(ITEMS_PER_PAGE);
          
             return res.status(200).json({ post});
         } catch (error) {
